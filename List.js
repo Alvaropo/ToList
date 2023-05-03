@@ -192,9 +192,6 @@ const styles = StyleSheet.create({
   delete: {
     backgroundColor: '#FFF',
     borderRadius: 55,
-    //alignItems: 'center',
-    // justifyContent: 'center',
-    // paddingVertical: 0,
     paddingHorizontal: 20,
     marginLeft: 115,
     marginRight: 115,
@@ -217,7 +214,6 @@ const styles = StyleSheet.create({
   },
 
   item: {
-    //backgroundColor:'yellow',
     flexDirection: 'row',
     alignItems: 'center',
     marginVertical: -8,

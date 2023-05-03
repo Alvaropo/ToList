@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Button,
-  Image,
-  TextInput,
-} from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Button, Image, TextInput, } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 function Home({ navigation }) {
@@ -96,7 +88,6 @@ const styles = StyleSheet.create({
     background: 'linear-gradient(to bottom, #1E5B53, #CCFFAA)',
   },
   paragraph: {
-    // flex:0,
     marginTop: '10%',
     marginBottom: '10%',
     fontSize: 60,
@@ -105,28 +96,12 @@ const styles = StyleSheet.create({
     backgroundClip: 'text',
     WebkitBackgroundClip: 'text',
     color: 'white',
-    // backgroundColor:'yellow',
   },
-  /*buttonContainer: {
-    position: 'fixed',
-   bottom: 0,
-    marginLeft:'10%',
-    marginRight:'10%',
-    alignSelf: 'center',
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    marginBottom: 10,
-  },
-  */
   buttonContainer: {
     flexDirection: 'row',
     alignItems: 'flex-end',
     justifyContent: 'space-evenly',
     marginTop: '150%',
-    // warp:'wrap',
-    //backgroundColor:'black',
-    // position: 'fixed',
-    // bottom: 0,
   },
   button: {
     margin: 30,

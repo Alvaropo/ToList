@@ -5,7 +5,7 @@ import {
   Text,
   TouchableOpacity,
   Image,
-  TextInput,
+  TextInput,ScrollView
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
@@ -26,18 +26,11 @@ function LogIn({ navigation }) {
 
   //CONTROLAR ANIMACIONES BOTONES
   
-  
-
   const handlePressBack = () => {
     navigation.navigate('FrontPage'); //navega a pantalla SignUp
   };
-
-
-
   const LogInButton = () => {
     handleLogin();
-    //navigation.navigate('Home');
-    
   };
 
 
@@ -86,6 +79,7 @@ function LogIn({ navigation }) {
   return (
     <View style={styles.container} keyboardShouldPersistTaps="handled">
       <LinearGradient colors={['#1E5B53', '#CCFFAA']} style={styles.container}>
+      <ScrollView>
         {/* ↓ ↓ ↓ BOTON BACK ↓ ↓ ↓ */}
         <TouchableOpacity
           onPress={handlePressBack} /*style={styles.backButton}*/
@@ -112,6 +106,7 @@ function LogIn({ navigation }) {
             <Text style={styles.textButton}>LOGIN</Text>
           </TouchableOpacity>
         </View>
+        </ScrollView>
       </LinearGradient>
     </View>
   );

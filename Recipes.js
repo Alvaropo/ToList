@@ -6,28 +6,17 @@ import axios from 'axios';
 
 function Recipes({ navigation }) {
 
-    const regex = /^\d+\s\w+\s|\s+(de\s+|\b(del?|la)\b\s*)/i;//esto es para recortar el string de ingredientes
+    const regex = /\d+g|\d+\s|\s(of\s+|\b(of?|tbsp)\b\s*)/i;//esto es para recortar el string de ingredientes
+    // const result = ingredient.substring(0, 28).replace(regex, "");
 
     //PANTALLA DE CARGA
     const fadeAnim = useRef(new Animated.Value(1)).current;
+
     //VARIABLES USECONTEXT
-    // const { user, setUser } = useContext(PantallasContext);
     const { recipeName, setRecipeName } = useContext(PantallasContext);
-    // const { dayOfWeek, setDayOfWeek } = useContext(PantallasContext);
-    //  const { mealType, setMealType } = useContext(PantallasContext);
-    // const { dietType, setDietType } = useContext(PantallasContext);
-    //  const { kcal, setKcal } = useContext(PantallasContext);
-    // const { ingredients, setIngredients } = useContext(PantallasContext);
-
-    const { dayOfWeek, mealType, user, dietType, kcal, ingredients,mealTypeFilter } = useContext(PantallasContext);
-    //setDietType('high-fiber');
-    //setKcal('1000');
-    //setIngredients('10');
-
-
+    const { dayOfWeek, mealType, user, dietType, kcal, ingredients, mealTypeFilter } = useContext(PantallasContext);
 
     //VARIABLES LOCALES
-
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const [recipes, setRecipes] = useState([]);
@@ -36,9 +25,7 @@ function Recipes({ navigation }) {
         const fetchData = async () => {
             setIsLoading(true);
             try {
-                const response = await axios.get('https://api.edamam.com/api/recipes/v2?type=public&q='+recipeName+'&mealType='+mealType+'&diet='+dietType+'&calories=100-'+kcal+'&ingr='+ingredients+'&app_id=98348007&app_key=77dff19f89b5d5a9347461da760c4e6c');
-                //https://api.edamam.com/api/recipes/v2?type=public&q='+recipeName+'&mealType='+mealType+'&diet='+dietType+'&calories=100-'+kcal+'&ingr='+ingredients+'&app_id=98348007&app_key=77dff19f89b5d5a9347461da760c4e6c
-                //https://api.edamam.com/api/recipes/v2?type=public&q=' + recipeName + '&app_id=98348007&app_key=77dff19f89b5d5a9347461da760c4e6c               
+                const response = await axios.get('https://api.edamam.com/api/recipes/v2?type=public&q=' + recipeName + '&mealType=' + mealType + '&diet=' + dietType + '&calories=100-' + kcal + '&ingr=' + ingredients + '&app_id=98348007&app_key=77dff19f89b5d5a9347461da760c4e6c');
                 setRecipes(response.data.hits.slice(0, 20)); // Se limita a un máximo de 20 recetas
             } catch (error) {
                 setError(error);
@@ -52,16 +39,13 @@ function Recipes({ navigation }) {
             duration: 3000,
             useNativeDriver: true,
         }).start();
-
-
-
     }, []);
     console.log('https://api.edamam.com/api/recipes/v2?type=public&q=' + recipeName + '&mealType=' + mealType + '&diet=' + dietType + '&calories=100-' + kcal + '&ingr=' + ingredients + '&app_id=98348007&app_key=77dff19f89b5d5a9347461da760c4e6c');
-    console.log('RECIPENAME '+recipeName);
-    console.log('MEALTYPE '+mealType);
-    console.log('DIETTYPE '+dietType);
-    console.log('KCALO '+kcal);
-    console.log('INGREDIENTS '+ingredients);
+    console.log('RECIPENAME ' + recipeName);
+    console.log('MEALTYPE ' + mealType);
+    console.log('DIETTYPE ' + dietType);
+    console.log('KCALO ' + kcal);
+    console.log('INGREDIENTS ' + ingredients);
     if (isLoading) {
         return <Animated.View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', opacity: fadeAnim }}>
             <ActivityIndicator size="large" color="green" />
@@ -101,22 +85,17 @@ function Recipes({ navigation }) {
         })
             .then((response) => {
                 if (response.data.matchedCount > 0) {
-                  //  alert('Recetita añadidita.');
-                    console.log('DayofWeek '+dayOfWeek);
-                    console.log('MealType '+mealType);
-                    console.log('MealTypeFilter '+mealTypeFilter);
-                    console.log('Label '+label);
+                    //  alert('Recetita añadidita.');
+                    console.log('DayofWeek ' + dayOfWeek);
+                    console.log('MealType ' + mealType);
+                    console.log('MealTypeFilter ' + mealTypeFilter);
+                    console.log('Label ' + label);
                     console.log(JSON.stringify(response.data));
-                } else {
-                    //alert('No se ha podido añadir.');
                 }
             })
             .catch((error) => {
                 console.log(error);
             });
-        //console.log('INGREDIENTES String '+ingredientsString);
-        //activar ring color naranja,rojo o azul
-        // navigation.navigate('Calendar')
     };
     const handlePressAddList = (ingredientsString) => {
 
@@ -143,7 +122,7 @@ function Recipes({ navigation }) {
                 update: {
                     $addToSet: {//agrega elementos a un array solo si no están ya presentes en el array. Si los elementos ya existen, $addToSet no hace nada.
                         items: {
-                            $each: filteredIngredientsList.map((ingredient) => ({ name: ingredient.substring(0, 28).replace(regex, "").trim(), checked: false }))
+                            $each: filteredIngredientsList.map((ingredient) => ({ name: ingredient.substring(0, 27).replace(regex, "").trim(), checked: false }))
                         }
                     }
                 }
@@ -161,7 +140,6 @@ function Recipes({ navigation }) {
                 console.log(error);
             });
         console.log('INGREDIENTES String ' + ingredientsString);
-        //activar ring color naranja,rojo o azul
         navigation.navigate('Calendar')
     };
 
@@ -222,6 +200,7 @@ const styles = StyleSheet.create({
         background: 'linear-gradient(to bottom, #1E5B53, #CCFFAA)',
     },
     list: {
+
         flexDirection: 'column',
         backgroundColor: '#FFF',
         borderRadius: 65,
@@ -244,7 +223,7 @@ const styles = StyleSheet.create({
         borderColor: '#b4b4b4',
     },
     title: {
-        //backgroundColor: '#FAF',
+
         textAlign: 'center',
         fontSize: 25,
         marginBottom: '3%',
@@ -252,25 +231,21 @@ const styles = StyleSheet.create({
     image: {
         width: 320,
         height: 250,
-        marginLeft: 10,
+        marginLeft: 0,
         backgroundColor: 'white',
         borderRadius: 25,
         borderWidth: 1,
         borderColor: 'grey',
     },
     text: {
-        flex: 1,
+        textAlign: 'left',
         backgroundColor: '#FFF',
         marginLeft: '5%',
-        marginRight: '0%',
-        paddingLeft: '3%',
+        marginRight: '5%',
         paddingTop: 10,
-        width: '85%',
-        // paddingRight: '-3%',
-        //flexDirection: 'row',
     },
     imagenIngredientes: {
-        //justifyContent: 'center', //No tocar esto, o si
+        alignItems: 'center',
         backgroundColor: '#FFF',
         flexDirection: 'column',
         padding: '0%',
@@ -282,13 +257,10 @@ const styles = StyleSheet.create({
         borderRadius: 55,
         marginTop: '3%',
         marginBottom: '5%',
-
         marginLeft: '30%',
         marginRight: '30%',
-
         paddingLeft: '3%',
         paddingRight: '3%',
-
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -322,8 +294,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         borderRadius: 15,
         borderWidth: 1
-        //marginRight:'5%',
-        //justifyContent: 'space-between',
+
     },
     infoText: {
         marginLeft: '5%',
