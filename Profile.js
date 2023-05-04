@@ -1,8 +1,10 @@
-import React, { useState, useContext } from 'react';
-import {View,StyleSheet,Text,TouchableOpacity,Button,Image,TextInput,ScrollView,
+import React, { useState, useContext, useEffect } from 'react';
+import {
+  View, StyleSheet, Text, TouchableOpacity, Button, Image, TextInput, ScrollView,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import PantallasContext from './PantallasContext';
+import axios from 'axios';
 
 
 
@@ -12,17 +14,210 @@ function Profile({ navigation }) {
 
 
   //VARIABLES USE CONTEXT
-const { user, setUser } = useContext(PantallasContext);
-const {email_context, setEmail_context} = useContext(PantallasContext);
-const {password_context, setPassword_context} = useContext(PantallasContext);
+  const { user, setUser } = useContext(PantallasContext);
+  const { email_context, setEmail_context } = useContext(PantallasContext);
+  const { password_context, setPassword_context } = useContext(PantallasContext);
 
-  //CONTROLAR ANIMACIONES BOTONES
+  //VARIABLES LOCALES
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [password2, setPassword2] = useState('');
 
 
+  //METODOS
+  useEffect(() => {
+    axios({
+      method: 'post',
+      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/find',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Request-Headers': '*',
+        'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw',
+      },
+      data: {
+        collection: 'users',
+        database: 'ToListDB',
+        dataSource: 'ToListCluster',
+        filter: { username: user },
+        limit: 1,
+      },
+    })
+      .then((response) => {
+        const obj = response.data.documents[0];
+      //console.log(obj.email);
+      setEmail(obj.email);
+      setUsername(obj.username);
+      setPassword(obj.password);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
-  const handlePressUpdate = () => {
+  
+
  
 
+  const handlePressUpdate = () => {
+    if (username.trim() === '' || email.trim() === '' || password.trim() === '' || password2.trim() === '') {//trim para eliminar los espacios en blanco
+      alert('Complete all text fields.');
+    } else if (user != username && email_context != email) {
+      handleCheckUsername().then((result) => {
+        if (result) {
+          if (password === password2) {
+            console.log('Actualizar usuario y demas');
+            setUser(username);//establezco el usuario para despues poder usarlo en toda la aplicacion para identificar y importar sus datos y recetas
+            setEmail_context(email);
+            setPassword_context(password);
+            handleUpdateUser();
+            alert('Profile Updated.');
+          } else {
+            alert('Passwords not match.');
+          }
+
+        }
+      });
+    } else {
+      if (password === password2) {
+        console.log('Actualizar usuario y demas');
+        setUser(username);//establezco el usuario para despues poder usarlo en toda la aplicacion para identificar y importar sus datos y recetas
+        setEmail_context(email);
+        setPassword_context(password);
+        handleUpdateUser();
+        alert('Profile Updated.');
+      } else {
+        alert('Passwords not match.');
+      }
+
+    }
+  };
+
+  const handleUpdateUser = () => {
+    axios({
+      method: 'post',
+      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/updateOne',
+      headers: {
+        'Content-Type': 'application/json',
+        'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw'
+      },
+      data: {
+        collection: 'users',
+        database: 'ToListDB',
+        dataSource: 'ToListCluster',
+        filter: {
+          username: user // el valor de la variable de estado `username`
+        },
+        update: {
+          $set: {
+            username: username, // el valor de la variable de estado `username`
+            email: email, // el valor de la variable de estado `email`
+            password: password // el valor de la variable de estado `password`
+          }
+        }
+      }
+    }).then((response) => {
+      console.log(response.data); // loguea la respuesta en la consola
+    }).catch((error) => {
+      console.log(error); // loguea el error en la consola
+    });
+
+
+
+    axios({
+      method: 'post',
+      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/updateOne',
+      headers: {
+        'Content-Type': 'application/json',
+        'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw'
+      },
+      data: {
+        collection: 'recipes',
+        database: 'ToListDB',
+        dataSource: 'ToListCluster',
+        filter: {
+          user: user // el valor de la variable de estado `username`
+        },
+        update: {
+          $set: {
+            user: username, // el valor de la variable de estado `username`
+          }
+        }
+      }
+    }).then((response) => {
+      console.log(response.data); // loguea la respuesta en la consola
+    }).catch((error) => {
+      console.log(error); // loguea el error en la consola
+    });
+
+
+
+    axios({
+      method: 'post',
+      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/updateOne',
+      headers: {
+        'Content-Type': 'application/json',
+        'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw'
+      },
+      data: {
+        collection: 'list',
+        database: 'ToListDB',
+        dataSource: 'ToListCluster',
+        filter: {
+          user: user // el valor de la variable de estado `username`
+        },
+        update: {
+          $set: {
+            user: username, // el valor de la variable de estado `username`
+          }
+        }
+      }
+    }).then((response) => {
+      console.log(response.data); // loguea la respuesta en la consola
+    }).catch((error) => {
+      console.log(error); // loguea el error en la consola
+    });
+
+    
+    
+  }
+
+  const handleCheckUsername = () => {
+    return axios({
+      method: 'post',
+      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/find',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Request-Headers': '*',
+        'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw',
+      },
+      data: {
+        collection: 'users',
+        database: 'ToListDB',
+        dataSource: 'ToListCluster',
+        filter: {
+          $or: [ //COMPRUEBA SI EXISTE UN USUARO O EMAIL CON EL INTRODUCIDO
+            { email: email },
+            { username: username }
+          ]
+        },
+        limit: 1,
+      },
+    })
+      .then((response) => {
+        if (response.data.documents.length === 1) {
+          alert('Username / Email exist.');
+          //console.log(response.data.documents);
+          //console.log('Si existen usuarios');
+          return false;
+        } else {
+          // console.log('No existen usuarios.');
+          return true;
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const handlePressLogout = () => {
@@ -35,16 +230,16 @@ const {password_context, setPassword_context} = useContext(PantallasContext);
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#1E5B53', '#CCFFAA']} style={styles.container}>
-      <ScrollView>
+        <ScrollView>
           <Text style={styles.paragraph}>Profile</Text>
           <Text style={styles.text}>USERNAME</Text>
-          <TextInput style={styles.textInput} value={user}></TextInput>
+          <TextInput style={styles.textInput} onChangeText={(text) => setUsername(text)} defaultValue={user}></TextInput>
           <Text style={styles.text}>EMAIL</Text>
-          <TextInput style={styles.textInput}value={email_context}></TextInput>
+          <TextInput style={styles.textInput} onChangeText={(text) => setEmail(text)} defaultValue={email}></TextInput>
           <Text style={styles.text}>PASSWORD</Text>
-          <TextInput style={styles.textInput} secureTextEntry={true}value={password_context} ></TextInput>
+          <TextInput style={styles.textInput} secureTextEntry={true} onChangeText={(text) => setPassword(text)} defaultValue={password_context} ></TextInput>
           <Text style={styles.text}>REPEAT PASSWORD</Text>
-          <TextInput style={styles.textInput}></TextInput>
+          <TextInput style={styles.textInput} secureTextEntry={true} onChangeText={(text) => setPassword2(text)} ></TextInput>
 
           {/* BOTONES */}
           <View style={styles.buttonContainer}>
@@ -54,12 +249,12 @@ const {password_context, setPassword_context} = useContext(PantallasContext);
               <Text style={styles.textButton}>UPDATE</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={handlePressLogout} 
+              onPress={handlePressLogout}
               style={styles.button}>
               <Text style={styles.textButton}>LOG OUT</Text>
             </TouchableOpacity>
           </View>
-          </ScrollView>
+        </ScrollView>
       </LinearGradient>
     </View>
   );
@@ -88,7 +283,7 @@ const styles = StyleSheet.create({
     marginTop: '2%',
   },
   button: {
-backgroundColor: 'white',
+    backgroundColor: 'white',
     borderRadius: 20,
     alignItems: 'center',
     justifyContent: 'center',

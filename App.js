@@ -34,15 +34,12 @@ function App() {
         <Stack.Screen name="Home">
           {() => (
             <Tab.Navigator
-              screenOptions={{ headerShown: false }}
-              tabBarOptions={{
-                activeTintColor: '#a9d989',
-                inactiveTintColor: '#1E5B53',
-                backgroundColor: 'red',
-                style: {
-                  backgroundColor: 'red',
-                },
-              }}
+              screenOptions={{ headerShown: false,
+                tabBarActiveTintColor: '#a9d989',
+                tabBarInactiveTintColor: '#1E5B53',
+                tabBarStyle: {
+                  display: 'flex' }}}
+              
               initialRouteName="Calendar">
               <Tab.Screen
                 name="Profile"

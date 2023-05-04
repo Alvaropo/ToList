@@ -1,4 +1,4 @@
-import React, { useState,useContext } from 'react';
+import React, { useState,useContext,useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -24,7 +24,9 @@ function LogIn({ navigation }) {
  
   const [password, setPassword] = useState('');
 
-  //CONTROLAR ANIMACIONES BOTONES
+  //METODOS
+
+  
   
   const handlePressBack = () => {
     navigation.navigate('FrontPage'); //navega a pantalla SignUp
@@ -61,7 +63,7 @@ function LogIn({ navigation }) {
          // alert('Usuario encontrado');
          // console.log(response.data.documents);
          setUser(username);
-         setEmail_context(email);
+        // setEmail_context(email);
          setPassword_context(password);
 
           navigation.navigate('Home');
@@ -91,9 +93,9 @@ function LogIn({ navigation }) {
         </TouchableOpacity>
         {/* ⇑⇑⇑⇑BOTON BACK ⇑⇑⇑ */}
         <Text style={styles.paragraph}>Login</Text>
-        <Text style={styles.text}>EMAIL / USERNAME</Text>
-        <TextInput style={styles.textInput} onChangeText={(text) => {setEmail(text);setUsername(text);}}
-        value={email}></TextInput>
+        <Text style={styles.text}> USERNAME</Text>
+        <TextInput style={styles.textInput} onChangeText={(text) => setUsername(text)}
+        ></TextInput>
         <Text style={styles.text}>PASSWORD</Text>
         <TextInput style={styles.textInput} onChangeText={(text) => setPassword(text)}
         value={password} secureTextEntry={true}></TextInput>

@@ -153,9 +153,6 @@ function Calendar({ navigation }) {
      // navigation.navigate('Calendar')
   };
 
-
-
-
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#1E5B53', '#CCFFAA']} style={styles.container}>

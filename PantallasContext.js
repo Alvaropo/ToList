@@ -1,4 +1,5 @@
 import {createContext, useState} from "react";
+import React from 'react';
 
 
 const PantallasContext = createContext();
@@ -10,8 +11,6 @@ export const PantallasProvider = ({ children }) => {
     const [password2_context, setPassword2_context] = useState("");
     const [dayOfWeek, setDayOfWeek] = useState("");
     const [mealType, setMealType] = useState("");
-
-
     const [mealTypeFilter, setMealTypeFilter] = useState("");
     const [recipeName, setRecipeName] = useState("Add");
     const [dietType, setDietType] = useState("");
@@ -20,7 +19,7 @@ export const PantallasProvider = ({ children }) => {
 
     return (
         <PantallasContext.Provider 
-        value ={{ 
+        value ={{   
             user, setUser,
             email_context, setEmail_context,
             password_context, setPassword_context,

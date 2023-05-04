@@ -1,14 +1,5 @@
 import React, { useState, useContext } from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Button,
-  Image,
-  TextInput,
-  ScrollView,
-} from 'react-native';
+import {View,StyleSheet,Text,TouchableOpacity,Image,TextInput,ScrollView,} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
 import PantallasContext from './PantallasContext';
@@ -46,7 +37,7 @@ function SignUp({ navigation }) {
     } else {
       handleCheckUsername().then((result) => {
         if (result) {
-          if (password==password2) {
+          if (password===password2) {
            // console.log('Crear usuario y demas');
             handleInsert();
             handleCreateDataRecipes();

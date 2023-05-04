@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TouchableWithoutFeedback, Alert, } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, TouchableWithoutFeedback, Alert,ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import PantallasContext from './PantallasContext';
 import axios from 'axios';
@@ -172,6 +172,7 @@ function Day({ navigation }) {
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#1E5B53', '#CCFFAA']} style={styles.container}>
+      <ScrollView>
         {/* BOTON BACK */}
         <TouchableOpacity
           onPress={handlePressBack} /*style={styles.backButton}*/
@@ -184,6 +185,7 @@ function Day({ navigation }) {
         <Text style={styles.paragraph}>{dayOfWeek.toUpperCase()}</Text>
 
         {addrecipe}
+        </ScrollView>
       </LinearGradient>
     </View>
   );
@@ -206,6 +208,7 @@ const styles = StyleSheet.create({
     height: 520,
     borderRadius: 160,
     alignItems: 'center',
+    marginBottom:'10%',
 
     //width: windowWidth * 0.5
     shadowColor: '#000',

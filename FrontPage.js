@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-//import * as Font from 'expo-font';
 
 function FrontPage({ navigation }) {
   //CONTROLAR ANIMACIONES BOTONES
@@ -48,7 +47,6 @@ const styles = StyleSheet.create({
     background: 'linear-gradient(to bottom, #1E5B53, #CCFFAA)',
   },
   paragraph: {
-    fontFamily: 'Arial',//Lobster,Comfortaa
     marginTop: 10,
     fontSize: 60,
     fontWeight: 'bold',
