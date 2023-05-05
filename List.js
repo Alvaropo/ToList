@@ -99,7 +99,7 @@ function List({ navigation }) {
 
   useEffect(() => {
 
-   // const refresco = setInterval(() => {
+    const refresco = setInterval(() => {
       axios({
         method: 'post',
         url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/find',
@@ -123,7 +123,7 @@ function List({ navigation }) {
           console.log(error);
         });
         console.log('REFRESCO LISTA');
-   // }, 10000);//SE REFRESCAN LOS LA LISTA DE INGREDIENTES CADA 1 SEGUNDOS
+    }, 3000);//SE REFRESCAN LOS LA LISTA DE INGREDIENTES CADA 1 SEGUNDOS
   }, []);
 
   return (

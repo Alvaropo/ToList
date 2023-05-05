@@ -41,7 +41,7 @@ function Calendar({ navigation }) {
 
   useEffect(() => {
     let obj = {}; 
-   // const refresco = setInterval(() => {
+    const refresco = setInterval(() => {
     axios({
       method: 'post',
       url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/find',
@@ -82,7 +82,7 @@ function Calendar({ navigation }) {
       .catch((error) => {
         console.log(error);
       });
-    //}, 50000);//SE REFRESCAN LOS LA LISTA DE INGREDIENTES CADA 1 SEGUNDOS
+    }, 5000);//SE REFRESCAN LOS LA LISTA DE INGREDIENTES CADA 1 SEGUNDOS
    console.log("ACTUALIZANDO DATOS CALENDAR");
   }, [user, dayOfWeek]);
   

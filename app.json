@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "tolist",
+    "name": "ToList",
     "slug": "snack-1973f664-4e0a-4e2f-9c66-e166609d2658",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "dark",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
