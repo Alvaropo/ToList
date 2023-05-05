@@ -118,8 +118,8 @@ function Search({ navigation }) {
           <TextInput
             style={styles.textInput}
             placeholder="Recipe Name"
-            placeholderTextColor="white" onChangeText={text => setRecipeName(text)}
-            value={setRecipeName}></TextInput>
+            placeholderTextColor="white" onChangeText={(text) => setRecipeName(text)}
+            /*value={'setRecipeName'}*/></TextInput>
 
           {/**CONTROLAR TIPO DE COMIDA ES DESAYUNO COMIDA O CENA */}
           <View style={styles.mealType}>

@@ -58,8 +58,9 @@ function Day({ navigation }) {
   }, [user, dayOfWeek]);
 
   const handlePressButtonBreakfast = () => {
-    navigation.navigate('Search');
     setMealType('breakfast');
+    navigation.navigate('Search');
+    
   };
 
   const handlePressBack = () => {
@@ -67,13 +68,15 @@ function Day({ navigation }) {
   };
 
   const handlePressButtonLunch = () => {
-    navigation.navigate('Search');
     setMealType('lunch');
+    navigation.navigate('Search');
+  
   };
 
   const handlePressButtonDinner = () => {
-    navigation.navigate('Search');
     setMealType('dinner');
+    navigation.navigate('Search');
+
   };
   const handleLongPress = (type) => {
     Alert.alert(

@@ -41,7 +41,7 @@ function Calendar({ navigation }) {
 
   useEffect(() => {
     let obj = {}; 
-   
+   // const refresco = setInterval(() => {
     axios({
       method: 'post',
       url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/find',
@@ -62,7 +62,7 @@ function Calendar({ navigation }) {
         if (obj !== null && obj !== undefined) {
           obj = response.data.documents[0];
 
-          console.log('DATA RESPONSE '+response.data.documents[0])
+          console.log('DATA RESPONSE '+response.data.documents[0]);
 
           Object.entries(obj.calendar).forEach(([day, meals]) => {
             setDays_(prevDays => prevDays.map(item => {
@@ -82,7 +82,7 @@ function Calendar({ navigation }) {
       .catch((error) => {
         console.log(error);
       });
-  
+    //}, 50000);//SE REFRESCAN LOS LA LISTA DE INGREDIENTES CADA 1 SEGUNDOS
    console.log("ACTUALIZANDO DATOS CALENDAR");
   }, [user, dayOfWeek]);
   

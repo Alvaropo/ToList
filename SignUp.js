@@ -4,6 +4,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
 import PantallasContext from './PantallasContext';
 //import { MD5 } from 'crypto-js';
+//import { MailComposer } from 'react-native-mail';
+//import * as MailComposer from 'react-native-mail';
 
 
 
@@ -28,6 +30,18 @@ function SignUp({ navigation }) {
 
     navigation.navigate('FrontPage'); //navega a pantalla SignUp
   };
+
+  /*const sendEmail = () => {
+    MailComposer.composeAsync({
+      recipients: ['alpoor@floridauniversitaria.es'],
+      subject: 'Asunto del correo electrónico',
+      body: 'Contenido del correo electrónico'
+    }).then(result => {
+      console.log('correo enviado'+result);
+    }).catch(error => {
+      console.log('correo error'+error);
+    });
+  }*/
 
 
 
@@ -211,7 +225,7 @@ function SignUp({ navigation }) {
       .then((response) => {
         // alert('Usuario ' + username + ' creado.');
         console.log(response.data.documents + 'Usuario insertado correctamente');
-
+        sendEmail();
       })
       .catch((error) => {
         console.log(error);
