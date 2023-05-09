@@ -10,6 +10,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
 import PantallasContext from './PantallasContext';
+import md5 from "react-native-md5";
 
 function LogIn({ navigation }) {
 
@@ -54,7 +55,7 @@ function LogIn({ navigation }) {
           { email: email }, 
           { username: username } 
         ],
-        password: password },
+        password: md5.hex_md5(password) },
         limit: 1,
       },
     })

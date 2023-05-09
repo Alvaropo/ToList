@@ -5,6 +5,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient';
 import PantallasContext from './PantallasContext';
 import axios from 'axios';
+import md5 from "react-native-md5";
 
 
 
@@ -23,6 +24,8 @@ function Profile({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
+  const [textPassword, setTextPassword] = useState('');
+  const [textPassword2, setTextPassword2] = useState('');
 
 
   //METODOS
@@ -237,9 +240,9 @@ function Profile({ navigation }) {
           <Text style={styles.text}>EMAIL</Text>
           <TextInput style={styles.textInput} onChangeText={(text) => setEmail(text)} defaultValue={email}></TextInput>
           <Text style={styles.text}>PASSWORD</Text>
-          <TextInput style={styles.textInput} secureTextEntry={true} onChangeText={(text) => setPassword(text)} defaultValue={password_context} ></TextInput>
+          <TextInput style={styles.textInput} secureTextEntry={true} onChangeText={(text) => {setTextPassword(text); setPassword(md5.hex_md5(text))}}/* defaultValue={password_context}*/ ></TextInput>
           <Text style={styles.text}>REPEAT PASSWORD</Text>
-          <TextInput style={styles.textInput} secureTextEntry={true} onChangeText={(text) => setPassword2(text)} ></TextInput>
+          <TextInput style={styles.textInput} secureTextEntry={true} onChangeText={(text) => {setTextPassword2(text);setPassword2(md5.hex_md5(text))}} ></TextInput>
 
           {/* BOTONES */}
           <View style={styles.buttonContainer}>

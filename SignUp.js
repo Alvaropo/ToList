@@ -3,6 +3,7 @@ import {View,StyleSheet,Text,TouchableOpacity,Image,TextInput,ScrollView,} from 
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
 import PantallasContext from './PantallasContext';
+import md5 from "react-native-md5";
 //import { MD5 } from 'crypto-js';
 //import { MailComposer } from 'react-native-mail';
 //import * as MailComposer from 'react-native-mail';
@@ -11,6 +12,9 @@ import PantallasContext from './PantallasContext';
 
 
 function SignUp({ navigation }) {
+
+ /* let contraMD5 = md5.hex_md5('contraseña1234');
+  console.log(">>>>hex_md5:", contraMD5);*/
 
   //VARIABLES USE CONTEXT
   const { user, setUser } = useContext(PantallasContext);
@@ -23,6 +27,8 @@ function SignUp({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [password2, setPassword2] = useState('');
+  const [textPassword, setTextPassword] = useState('');
+  const [textPassword2, setTextPassword2] = useState('');
 
   //CONTROLAR ANIMACIONES BOTONES
 
@@ -46,6 +52,13 @@ function SignUp({ navigation }) {
 
 
   const SignUpButton = () => {
+ 
+    /*console.log('MD5-1'+md5.hex_md5(password));
+    setPassword(md5.hex_md5(MD));
+    console.log('MD5-2'+password);*/
+   
+
+
     if (username.trim() === ''||email.trim() === ''||password.trim() === ''||password2.trim() === '') {//trim para eliminar los espacios en blanco
       alert('Complete all text fields.');
     } else {
@@ -257,13 +270,13 @@ function SignUp({ navigation }) {
             value={email}></TextInput>
           <Text style={styles.text}>PASSWORD</Text>
           <TextInput style={styles.textInput} /*placeholder="Contraseña"*/
-            onChangeText={(text) => setPassword(text)}
-            value={password}
+            onChangeText={(text) => {setPassword(md5.hex_md5(text));setTextPassword(text);}}
+           // value={textPassword}
             secureTextEntry={true}></TextInput>
           <Text style={styles.text}>REPEAT PASSWORD</Text>
           <TextInput style={styles.textInput}
-            onChangeText={(text) => setPassword2(text)}
-            value={password2}
+            onChangeText={(text) => {setPassword2(md5.hex_md5(text));setTextPassword2(text)}}
+           // value={textPassword2}
             secureTextEntry={true}>
           </TextInput>
 

@@ -6,8 +6,11 @@ import axios from 'axios';
 
 function Recipes({ navigation }) {
 
-   const regex = /[\d.,\/#!$%\^&\*;:{}=\-_`~()]+\b|(?:\b(?:(?:\d+\s*g(?!\w))|(?:\d*\.\d+\s*g(?!\w))|(?:\d+\s*\/\s*2|\u00BD|\d+\s*\/\s*4|\d+\s*\/\s*8|\d+\s*\/\s*3)|(?:\d+\s*ounces(?!\w))|(?:\d+\s*cups?(?!\w))|(?:\d+\s*cup?(?!\w))|(?:\d+\s*tablespoons?(?!\w))|(?:\d+\s*(?:table|tea)?spoons?(?!\w))||(?:tablespoons?|teaspoons?|tablespoon?|teaspoon?|ounces?|cup?|cups?)|(?:\d+\s*(?:table|tea)?spoon?(?!\w))|(?:g(?!\w))|(?:grams(?!\w)))\b)|[^\w\s]/gi;
-//esto es para recortar el string de ingredientes
+   const regex = /(tbsp|tsp|glass|can|ounces|cups|cup|tablespoons|spoon|spoons|tea|tablespoon|teaspoon|g|cann|and|can|grams|\d+\s*g)&&[\d.,\/#!$%\^&\*;:{}=\-_`~()]+\b|(?:\b(?:(?:\d+\s*g(?!\w))|(?:\d*\.\d+\s*g(?!\w))|(?:\d+\s*\/\s*2|\u00BD|\d+\s*\/\s*4|\d+\s*\/\s*8|\d+\s*\/\s*3)|(?:\d+\s*ounces(?!\w))|(?:\d+\s*cups?(?!\w))|(?:\d+\s*tbsp?(?!\w))|(?:\d+\s*cup?(?!\w))|(?:\d+\s*tablespoons?(?!\w))|(?:\d+\s*(?:table|tea)?spoons?(?!\w))||(?:tablespoons?|teaspoons?|tablespoon?|teaspoon?|ounces?|cup?|cups?|g?|tbsp?|tsp?)|(?:\d+\s*(?:table|tea)?spoon?(?!\w))|(?:g(?!\w))|(?:grams(?!\w)))\b)|[^\w\s]/gi;
+
+   //const regex = /(tbsp|tsp|glass|can|ounces|cups|cup|tablespoons|spoon|spoons|tea|tablespoon|teaspoon|g|cann|can|grams|\d+\s*g)/gi;
+   //const regex = texto.replace(regex_, "");
+   //esto es para recortar el string de ingredientes
     // const result = ingredient.substring(0, 28).replace(regex, "");
 
     //PANTALLA DE CARGA
