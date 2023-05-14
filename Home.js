@@ -1,34 +1,10 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Button, Image, TextInput, } from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Image, } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 function Home({ navigation }) {
-  //CONTROLAR ANIMACIONES BOTONES
-  const [pressedPerson, setPressedPerson] = useState(false);
-  const [pressedCalendar, setPressedCalendar] = useState(false);
-  const [pressedList, setPressedList] = useState(false);
-
-  const handlePressPerson = () => {
-    setPressedPerson(true);
-    setTimeout(() => setPressedPerson(false), 100);
-  };
-
-  const handlePressCalendar = () => {
-    setPressedCalendar(true);
-    setTimeout(() => setPressedCalendar(false), 100);
-  };
-
-  const handlePressList = () => {
-    setPressedList(true);
-    setTimeout(() => setPressedList(false), 100);
-  };
-
-  //JUNTAR ANIMACIONES Y REDIRECCIONAMIENTO DE PANTALLAS
-
   const ProfileButton = () => {
     handlePressPerson();
     navigation.navigate('Profile');
-    console.log('Boton PULSADOO');
   };
 
   const CalendarButton = () => {
@@ -45,35 +21,21 @@ function Home({ navigation }) {
     <View style={styles.container}>
       <LinearGradient colors={['#1E5B53', '#CCFFAA']} style={styles.container}>
         <Text style={styles.paragraph}>Home</Text>
-
-        {/* BOTONES */}
+        {/* BOTONES DEL NAVIGATION TAB */}
         <View style={styles.buttonContainer}>
           <TouchableOpacity
-            onPress={ProfileButton} /*style={styles.backButton}*/
-            style={[
-              styles.button,
-              pressedPerson ? (style = { transform: [{ scale: 1.15 }] }) : null,
-            ]}>
+            onPress={ProfileButton}
+            style={styles.button}>
             <Image source={require('./components/person.png')} />
           </TouchableOpacity>
-
           <TouchableOpacity
-            onPress={CalendarButton} /*style={styles.backButton}*/
-            style={[
-              styles.button,
-              pressedCalendar
-                ? (style = { transform: [{ scale: 1.15 }] })
-                : null,
-            ]}>
+            onPress={CalendarButton}
+            style={styles.button}>
             <Image source={require('./components/calendar.png')} />
           </TouchableOpacity>
-
           <TouchableOpacity
-            onPress={ListButton} /*style={styles.backButton}*/
-            style={[
-              styles.button,
-              pressedList ? (style = { transform: [{ scale: 1.15 }] }) : null,
-            ]}>
+            onPress={ListButton}
+            style={styles.button}>
             <Image source={require('./components/checklist.png')} />
           </TouchableOpacity>
         </View>

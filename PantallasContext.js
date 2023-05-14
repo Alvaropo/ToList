@@ -1,7 +1,6 @@
 import {createContext, useState} from "react";
 import React from 'react';
 
-
 const PantallasContext = createContext();
 
 export const PantallasProvider = ({ children }) => {

@@ -31,53 +31,44 @@ function Search({ navigation }) {
   const handlePressSearch = () => {
     setPressedSearch(true);
     setTimeout(() => setPressedSearch(false), 100);
-
     setMealTypeFilter(selectedButtonMealType);
     setDietType(selectedButtonDietType);
     setKcal(kcalCounter);
     setIngredients(ingredientsCounter);
-
     navigation.navigate('Recipes');
   };
 
   //CONTADORES KCAL Y INGREDIENTES
   const incrementKcal = () => {
     setKcalCounter(kcalCounter + 50);
-    // setKcal(kcalCounter);
   };
 
   const decrementKcal = () => {
     if (kcalCounter > 50) {
       setKcalCounter(kcalCounter - 50);
     }
-    //setKcal(kcalCounter);
   };
 
   const incrementIngredients = () => {
     setIngredientsCounter(ingredientsCounter + 1);
-    // setIngredients(ingredientsCounter);
   };
 
   const decrementIngredients = () => {
     if (ingredientsCounter > 1) {
       setIngredientsCounter(ingredientsCounter - 1);
     }
-    //setIngredients(ingredientsCounter);
   };
 
   //CONTROL DE BOTONES
   const handleButtonPressMeal = (button) => {
     setSelectedButtonMealType(button);
-    //setMealType(button);
     console.log(button);
   };
 
   const handleButtonPressDiet = (button) => {
     setSelectedButtonDietType(button);
-    //setDietType(button);
     console.log(button);
   };
-
 
   //PULSAR PARA INCREMENTAR AUTOMATICAMENTE AL DEJAR PRESIONADO UN BOTON +,-
   const intervalRef = useRef(null);
@@ -98,14 +89,13 @@ function Search({ navigation }) {
     clearInterval(intervalRef.current);
   };
 
-
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#1E5B53', '#CCFFAA']} style={styles.container}>
         <ScrollView>
           {/* BOTON BACK */}
           <TouchableOpacity
-            onPress={handlePressBack} /*style={styles.backButton}*/
+            onPress={handlePressBack}
             style={[
               styles.backButton,
               pressedBack ? (style = { transform: [{ scale: 1.2 }], marginTop: '12%', marginLeft: '11%', }) : null,]}>
@@ -119,33 +109,22 @@ function Search({ navigation }) {
             style={styles.textInput}
             placeholder="Recipe Name"
             placeholderTextColor="white" onChangeText={(text) => setRecipeName(text)}
-            /*value={'setRecipeName'}*/></TextInput>
+          ></TextInput>
 
           {/**CONTROLAR TIPO DE COMIDA ES DESAYUNO COMIDA O CENA */}
           <View style={styles.mealType}>
             <TouchableOpacity
-              style={[
-                styles.buttonMealType,
-                selectedButtonMealType === 'breakfast'
-                  ? null
-                  : styles.opaqueButton,
-              ]}
+              style={[styles.buttonMealType, selectedButtonMealType === 'breakfast' ? null : styles.opaqueButton,]}
               onPress={() => handleButtonPressMeal('breakfast')}>
               <Text style={styles.buttonText}>Breakfast</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[
-                styles.buttonMealType,
-                selectedButtonMealType === 'lunch' ? null : styles.opaqueButton,
-              ]}
+              style={[styles.buttonMealType, selectedButtonMealType === 'lunch' ? null : styles.opaqueButton,]}
               onPress={() => handleButtonPressMeal('lunch')}>
               <Text style={styles.buttonText}>Lunch</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[
-                styles.buttonMealType,
-                selectedButtonMealType === 'dinner' ? null : styles.opaqueButton,
-              ]}
+              style={[styles.buttonMealType, selectedButtonMealType === 'dinner' ? null : styles.opaqueButton,]}
               onPress={() => handleButtonPressMeal('dinner')}>
               <Text style={styles.buttonText}>Dinner</Text>
             </TouchableOpacity>
@@ -154,40 +133,29 @@ function Search({ navigation }) {
           {/**CONTROLAR TIPO DE DIETA DIET */}
           <View style={styles.dietType}>
             <TouchableOpacity
-              style={[
-                styles.buttonMealType,
-                selectedButtonDietType === 'balanced'
-                  ? null
-                  : styles.opaqueButton,
-              ]}
+              style={[styles.buttonMealType, selectedButtonDietType === 'balanced' ? null : styles.opaqueButton]}
               onPress={() => handleButtonPressDiet('balanced')}>
               <Text style={styles.buttonText}>Balanced</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[
-                styles.buttonMealType,
-                selectedButtonDietType === 'low-carb' ? null : styles.opaqueButton,
-              ]}
+              style={[styles.buttonMealType, selectedButtonDietType === 'low-carb' ? null : styles.opaqueButton,]}
               onPress={() => handleButtonPressDiet('low-carb')}>
               <Text style={styles.buttonText}>Low-Carb</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[
-                styles.buttonMealType,
-                selectedButtonDietType === 'low-fat' ? null : styles.opaqueButton,
-              ]}
+              style={[styles.buttonMealType, selectedButtonDietType === 'low-fat' ? null : styles.opaqueButton,]}
               onPress={() => handleButtonPressDiet('low-fat')}>
               <Text style={styles.buttonText}>Low-Fat</Text>
             </TouchableOpacity>
           </View>
           <View style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: '2%',
-              marginLeft: '2%',
-              marginRight: '2%',
-            }}>
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: '2%',
+            marginLeft: '2%',
+            marginRight: '2%',
+          }}>
             <TouchableOpacity
               style={[styles.buttonMealType, selectedButtonDietType === 'high-protein' ? null : styles.opaqueButton,]}
               onPress={() => handleButtonPressDiet('high-protein')}>

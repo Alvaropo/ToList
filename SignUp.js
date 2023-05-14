@@ -1,28 +1,18 @@
 import React, { useState, useContext } from 'react';
-import {View,StyleSheet,Text,TouchableOpacity,Image,TextInput,ScrollView,} from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, Image, TextInput, ScrollView, } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
 import PantallasContext from './PantallasContext';
 import md5 from "react-native-md5";
-//import { MD5 } from 'crypto-js';
-//import { MailComposer } from 'react-native-mail';
-//import * as MailComposer from 'react-native-mail';
-
-
-
 
 function SignUp({ navigation }) {
 
- /* let contraMD5 = md5.hex_md5('contraseña1234');
-  console.log(">>>>hex_md5:", contraMD5);*/
-
   //VARIABLES USE CONTEXT
   const { user, setUser } = useContext(PantallasContext);
-  const {email_context, setEmail_context} = useContext(PantallasContext);
-  const {password_context, setPassword_context} = useContext(PantallasContext);
+  const { email_context, setEmail_context } = useContext(PantallasContext);
+  const { password_context, setPassword_context } = useContext(PantallasContext);
 
   //CAVIABLES LOCALES
-
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -30,42 +20,18 @@ function SignUp({ navigation }) {
   const [textPassword, setTextPassword] = useState('');
   const [textPassword2, setTextPassword2] = useState('');
 
-  //CONTROLAR ANIMACIONES BOTONES
-
   const handlePressBack = () => {
-
     navigation.navigate('FrontPage'); //navega a pantalla SignUp
   };
 
-  /*const sendEmail = () => {
-    MailComposer.composeAsync({
-      recipients: ['alpoor@floridauniversitaria.es'],
-      subject: 'Asunto del correo electrónico',
-      body: 'Contenido del correo electrónico'
-    }).then(result => {
-      console.log('correo enviado'+result);
-    }).catch(error => {
-      console.log('correo error'+error);
-    });
-  }*/
-
-
-
+  //OBTIENE LOS DATOS INTRODUCIDOS EN LSO TEXTINPUT Y LOS ESTABLECE A LAS VARIABLES
   const SignUpButton = () => {
- 
-    /*console.log('MD5-1'+md5.hex_md5(password));
-    setPassword(md5.hex_md5(MD));
-    console.log('MD5-2'+password);*/
-   
-
-
-    if (username.trim() === ''||email.trim() === ''||password.trim() === ''||password2.trim() === '') {//trim para eliminar los espacios en blanco
+    if (username.trim() === '' || email.trim() === '' || password.trim() === '' || password2.trim() === '') {//trim para eliminar los espacios en blanco
       alert('Complete all text fields.');
     } else {
       handleCheckUsername().then((result) => {
         if (result) {
-          if (password===password2) {
-           // console.log('Crear usuario y demas');
+          if (password === password2) {
             handleInsert();
             handleCreateDataRecipes();
             handleCreateDataList();
@@ -76,14 +42,13 @@ function SignUp({ navigation }) {
           } else {
             alert('Passwords not match.');
           }
-  
+
         }
       });
     }
   };
 
-  //CODIGO AXIOS
-
+  //COMPRUEBA SI EXISTE UN USUARO O EMAIL CON EL QUE SE HA INTRODUCIDO
   const handleCheckUsername = () => {
     return axios({
       method: 'post',
@@ -98,7 +63,7 @@ function SignUp({ navigation }) {
         database: 'ToListDB',
         dataSource: 'ToListCluster',
         filter: {
-          $or: [ //COMPRUEBA SI EXISTE UN USUARO O EMAIL CON EL INTRODUCIDO
+          $or: [
             { email: email },
             { username: username }
           ]
@@ -109,11 +74,8 @@ function SignUp({ navigation }) {
       .then((response) => {
         if (response.data.documents.length === 1) {
           alert('Username / Email exist.');
-          //console.log(response.data.documents);
-          //console.log('Si existen usuarios');
           return false;
         } else {
-         // console.log('No existen usuarios.');
           return true;
         }
       })
@@ -122,6 +84,7 @@ function SignUp({ navigation }) {
       });
   };
 
+  //INSERTA Y CREA EL NUEVO USUARIO
   const handleInsert = () => {
     axios({
       method: 'post',
@@ -151,10 +114,11 @@ function SignUp({ navigation }) {
       });
   };
 
-  const handleCreateDataRecipes = () => {//Crea la base de datos Recipes del usuario correspondiente
+  //CREA LA BASE DE DATOS RECIPES CORRESPONDIENTE AL USUARIO REGISTRADO
+  const handleCreateDataRecipes = () => {
     axios({
       method: 'post',
-      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/insertOne',//Insert many porque inserto don dos collenciones
+      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/insertOne',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Request-Headers': '*',
@@ -207,18 +171,18 @@ function SignUp({ navigation }) {
       }
     })
       .then((response) => {
-        // alert('Usuario ' + username + ' creado.');
         console.log(response.data.documents + 'Usuario insertado correctamente');
-
       })
       .catch((error) => {
         console.log(error);
       });
   };
-  const handleCreateDataList = () => {//Crea la base de datos LIST del usuario correspondiente
+
+  //CREA LA BASE DE DATOS LIST CORRESPONDIENTE AL USUARIO REGISTRADO
+  const handleCreateDataList = () => {
     axios({
       method: 'post',
-      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/insertOne',//Insert many porque inserto don dos collenciones
+      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/insertOne',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Request-Headers': '*',
@@ -229,14 +193,12 @@ function SignUp({ navigation }) {
         database: 'ToListDB',
         dataSource: 'ToListCluster',
         document: {
-          
           user: username,
-          items:[]
+          items: []
         }
       }
     })
       .then((response) => {
-        // alert('Usuario ' + username + ' creado.');
         console.log(response.data.documents + 'Usuario insertado correctamente');
         sendEmail();
       })
@@ -251,7 +213,7 @@ function SignUp({ navigation }) {
         <ScrollView>
           {/* BOTON BACK */}
           <TouchableOpacity
-            onPress={handlePressBack} /*style={styles.backButton}*/
+            onPress={handlePressBack}
             style={styles.backButton}>
             <Image
               source={require('./components/arrow_back.png')}
@@ -259,27 +221,23 @@ function SignUp({ navigation }) {
             />
           </TouchableOpacity>
           <Text style={styles.paragraph}>Sign Up</Text>
-
           <Text style={styles.text}>USERNAME</Text>
-          <TextInput style={styles.textInput} /*placeholder="Nombre de usuario"*/
+          <TextInput style={styles.textInput}
             onChangeText={(text) => setUsername(text)}
             value={username}></TextInput>
           <Text style={styles.text}>EMAIL</Text>
-          <TextInput style={styles.textInput} /*placeholder="Correo electrónico"*/
+          <TextInput style={styles.textInput}
             onChangeText={(text) => setEmail(text)}
             value={email}></TextInput>
           <Text style={styles.text}>PASSWORD</Text>
-          <TextInput style={styles.textInput} /*placeholder="Contraseña"*/
-            onChangeText={(text) => {setPassword(md5.hex_md5(text));setTextPassword(text);}}
-           // value={textPassword}
+          <TextInput style={styles.textInput}
+            onChangeText={(text) => { setPassword(md5.hex_md5(text)); setTextPassword(text); }}
             secureTextEntry={true}></TextInput>
           <Text style={styles.text}>REPEAT PASSWORD</Text>
           <TextInput style={styles.textInput}
-            onChangeText={(text) => {setPassword2(md5.hex_md5(text));setTextPassword2(text)}}
-           // value={textPassword2}
+            onChangeText={(text) => { setPassword2(md5.hex_md5(text)); setTextPassword2(text) }}
             secureTextEntry={true}>
           </TextInput>
-
           {/* BOTONES */}
           <View style={styles.buttonContainer}>
             <TouchableOpacity
@@ -328,7 +286,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginLeft: 90,
     marginRight: 90,
-    // marginTop: '20%',
     //AÑADIR SOMBRA Y BORDE AL BOTON
     elevation: 5,
     shadowColor: '#000',
@@ -347,7 +304,6 @@ const styles = StyleSheet.create({
   textButton: {
     color: '#6E6E6E',
     fontSize: 18,
-   // backgroundColor:'green'
   },
   text: {
     color: 'white',

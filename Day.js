@@ -1,35 +1,29 @@
 import { useState, useContext, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image, TouchableWithoutFeedback, Alert,ScrollView } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, TouchableWithoutFeedback, Alert, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import PantallasContext from './PantallasContext';
 import axios from 'axios';
 
-
-
-//LOS BOTONES NO ESTAN BIEN
 function Day({ navigation }) {
 
-  //VARIABLES USE
-
-
-  //const [objInfo, setObjInfo] = useState(null);
+  //VARIABLES LOCALES
   const [breakfast, setBreakfast] = useState(null);
   const [lunch, setLunch] = useState(null);
   const [dinner, setDinner] = useState(null);
+
+  //VARIABLES USECONTEXT
   const { dayOfWeek, mealType, setMealType, user } = useContext(PantallasContext);
 
-  const handleResponse = (response) => {//ESTA FUNCION SIRVE PARA ESPERAR LA RESPUESTA DE LA API Y DESPUES ASIGNARLAS
+  const handleResponse = (response) => {//ESTA FUNCION SIRVE PARA ESPERAR LA RESPUESTA DE LA API Y DESPUES ASIGNAR VALORES
     if (response.data.documents.length === 1) {
-      //alert('Info encontrada');
       const obj = response.data.documents[0];
       setBreakfast(obj.calendar[dayOfWeek].breakfast);
       setLunch(obj.calendar[dayOfWeek].lunch);
       setDinner(obj.calendar[dayOfWeek].dinner);
-
-
     }
   };
 
+  //OBTIENE LAS RECETAS DEL USUARIO CORRESPONDIENTE
   useEffect(() => {
     axios({
       method: 'post',
@@ -48,9 +42,7 @@ function Day({ navigation }) {
       },
     })
       .then((response) => {
-        // setObjInfo(JSON.stringify(response.data.documents[0]));
         handleResponse(response);
-        //console.log('RESPONSE '+JSON.stringify(response))
       })
       .catch((error) => {
         console.log(error);
@@ -60,7 +52,6 @@ function Day({ navigation }) {
   const handlePressButtonBreakfast = () => {
     setMealType('breakfast');
     navigation.navigate('Search');
-    
   };
 
   const handlePressBack = () => {
@@ -70,14 +61,14 @@ function Day({ navigation }) {
   const handlePressButtonLunch = () => {
     setMealType('lunch');
     navigation.navigate('Search');
-  
   };
 
   const handlePressButtonDinner = () => {
     setMealType('dinner');
     navigation.navigate('Search');
-
   };
+
+  //TRAS PULSACION LARGA ELIMINA LA RECETA SELECCIONADA
   const handleLongPress = (type) => {
     Alert.alert(
       'DELETE',
@@ -96,6 +87,8 @@ function Day({ navigation }) {
       { cancelable: true }
     );
   };
+
+  //ELIMINA LA RECETA SELECCIONADA
   const handleDelete = (type) => {
     console.log('Delete');
     axios({
@@ -115,58 +108,52 @@ function Day({ navigation }) {
         },
         update: {
           $set: {
-            ['calendar.'+dayOfWeek+'.'+type]: 'Add',
+            ['calendar.' + dayOfWeek + '.' + type]: 'Add',
           }
         }
       }
     })
-    .then((response) => {
-      if (response.data.matchedCount > 0) {
-        alert('Recipe deleted.');
-        console.log(response.data);
-        // Actualiza el estado correspondiente a null antes de tener que volver a acceder a la bd
-        if (type === 'breakfast') {
-          setBreakfast('Add');
-        } else if (type === 'lunch') {
-          setLunch('Add');
-        } else if (type === 'dinner') {
-          setDinner('Add');
+      .then((response) => {
+        if (response.data.matchedCount > 0) {
+          alert('Recipe deleted.');
+          console.log(response.data);
+          // Actualiza el estado correspondiente a null antes de tener que volver a acceder a la bd
+          if (type === 'breakfast') {
+            setBreakfast('Add');
+          } else if (type === 'lunch') {
+            setLunch('Add');
+          } else if (type === 'dinner') {
+            setDinner('Add');
+          }
+        } else {
+          alert('Error on delete.');
         }
-      } else {
-        alert('Error on delete.');
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
-
 
   const addrecipe = (
     <View style={{ alignItems: 'center' }}>
       <View style={styles.pill}>
         <TouchableWithoutFeedback onPress={handlePressButtonBreakfast} onLongPress={() => handleLongPress('breakfast')}>
-          <View style={[styles.button, { borderColor: breakfast !== "Add" ? 'orange' : 'white' }]}
-          //days[index].orange = false;
-          >
+          <View
+            style={[styles.button, { borderColor: breakfast !== "Add" ? 'orange' : 'white' }]}>
             <Text style={styles.textButton}>{breakfast}</Text>
           </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={handlePressButtonLunch} onLongPress={() => handleLongPress('lunch')}>
-        <View
-          style={[styles.button, { borderColor: lunch !== "Add" ? '#7BC640' : 'white' }]}
-        //days[index].green = false;
-        >
-          <Text style={styles.textButton}>{lunch}</Text>
-        </View>
+          <View
+            style={[styles.button, { borderColor: lunch !== "Add" ? '#7BC640' : 'white' }]}>
+            <Text style={styles.textButton}>{lunch}</Text>
+          </View>
         </TouchableWithoutFeedback>
         <TouchableWithoutFeedback onPress={handlePressButtonDinner} onLongPress={() => handleLongPress('dinner')}>
-        <View
-          style={[styles.button, { borderColor: dinner !== "Add" ? '#36ABDB' : 'white' }]}
-        //days[dayOfWeek].blue = false;
-        >
-          <Text style={styles.textButton}>{dinner}</Text>
-        </View>
+          <View
+            style={[styles.button, { borderColor: dinner !== "Add" ? '#36ABDB' : 'white' }]}>
+            <Text style={styles.textButton}>{dinner}</Text>
+          </View>
         </TouchableWithoutFeedback>
       </View>
     </View>
@@ -175,19 +162,18 @@ function Day({ navigation }) {
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#1E5B53', '#CCFFAA']} style={styles.container}>
-      <ScrollView>
-        {/* BOTON BACK */}
-        <TouchableOpacity
-          onPress={handlePressBack} /*style={styles.backButton}*/
-          style={styles.backButton}>
-          <Image
-            source={require('./components/arrow_back.png')}
-            style={{ width: 50, height: 50 }}
-          />
-        </TouchableOpacity>
-        <Text style={styles.paragraph}>{dayOfWeek.toUpperCase()}</Text>
-
-        {addrecipe}
+        <ScrollView>
+          {/* BOTON BACK */}
+          <TouchableOpacity
+            onPress={handlePressBack}
+            style={styles.backButton}>
+            <Image
+              source={require('./components/arrow_back.png')}
+              style={{ width: 50, height: 50 }}
+            />
+          </TouchableOpacity>
+          <Text style={styles.paragraph}>{dayOfWeek.charAt(0).toUpperCase() + dayOfWeek.slice(1)}</Text>{/*Mostrar la primera letra en upper*/}
+          {addrecipe}
         </ScrollView>
       </LinearGradient>
     </View>
@@ -211,9 +197,7 @@ const styles = StyleSheet.create({
     height: 520,
     borderRadius: 160,
     alignItems: 'center',
-    marginBottom:'10%',
-
-    //width: windowWidth * 0.5
+    marginBottom: '10%',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -224,7 +208,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#b4b4b4',
   },
-
   paragraph: {
     marginTop: '5%',
     marginBottom: '10%',
@@ -242,8 +225,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingVertical: '5%',
     paddingHorizontal: '10%',
-    //marginLeft: 90,
-    //marginRight: 90,
     marginTop: '28%',
     //AÑADIR SOMBRA Y BORDE AL BOTON
     elevation: 5,

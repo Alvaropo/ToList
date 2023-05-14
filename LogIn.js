@@ -1,12 +1,5 @@
-import React, { useState,useContext,useEffect } from 'react';
-import {
-  View,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  Image,
-  TextInput,ScrollView
-} from 'react-native';
+import React, { useState, useContext } from 'react';
+import { View, StyleSheet, Text, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
 import PantallasContext from './PantallasContext';
@@ -16,28 +9,22 @@ function LogIn({ navigation }) {
 
   //VARIABLES USE CONTEXT
   const { user, setUser } = useContext(PantallasContext);
-  const {email_context, setEmail_context} = useContext(PantallasContext);
-  const {password_context, setPassword_context} = useContext(PantallasContext);
+  const { password_context, setPassword_context } = useContext(PantallasContext);
 
   //VARIABLES LOCALES
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
- 
   const [password, setPassword] = useState('');
 
-  //METODOS
-
-  
-  
   const handlePressBack = () => {
-    navigation.navigate('FrontPage'); //navega a pantalla SignUp
+    navigation.navigate('FrontPage');
   };
   const LogInButton = () => {
     handleLogin();
   };
 
 
-//CODIGO DE AXIOS
+  //METODO PARA AUTENTIFICACION DE USUARIO INTRODUCIDO EN TEXTINPUT
   const handleLogin = () => {
     axios({
       method: 'post',
@@ -51,22 +38,20 @@ function LogIn({ navigation }) {
         collection: 'users',
         database: 'ToListDB',
         dataSource: 'ToListCluster',
-        filter: {$or: [ //EL OR ME PERMITE INICIAR SESION TANTO CON EMAIL O CON EL USERNAME
-          { email: email }, 
-          { username: username } 
-        ],
-        password: md5.hex_md5(password) },
+        filter: {
+          $or: [ //EL OR ME PERMITE INICIAR SESION TANTO CON EMAIL O CON EL USERNAME
+            { email: email },
+            { username: username }
+          ],
+          password: md5.hex_md5(password)
+        },
         limit: 1,
       },
     })
       .then((response) => {
         if (response.data.documents.length === 1) {
-         // alert('Usuario encontrado');
-         // console.log(response.data.documents);
-         setUser(username);
-        // setEmail_context(email);
-         setPassword_context(password);
-
+          setUser(username);
+          setPassword_context(password);
           navigation.navigate('Home');
         } else {
           alert('Email or Password INCORRECT.');
@@ -77,38 +62,33 @@ function LogIn({ navigation }) {
       });
   };
 
-
-
   return (
     <View style={styles.container} keyboardShouldPersistTaps="handled">
       <LinearGradient colors={['#1E5B53', '#CCFFAA']} style={styles.container}>
-      <ScrollView>
-        {/* ↓ ↓ ↓ BOTON BACK ↓ ↓ ↓ */}
-        <TouchableOpacity
-          onPress={handlePressBack} /*style={styles.backButton}*/
-          style={styles.backButton}>
-          <Image
-            source={require('./components/arrow_back.png')}
-            style={{ width: 50, height: 50 }}
-          />
-        </TouchableOpacity>
-        {/* ⇑⇑⇑⇑BOTON BACK ⇑⇑⇑ */}
-        <Text style={styles.paragraph}>Login</Text>
-        <Text style={styles.text}> USERNAME</Text>
-        <TextInput style={styles.textInput} onChangeText={(text) => setUsername(text)}
-        ></TextInput>
-        <Text style={styles.text}>PASSWORD</Text>
-        <TextInput style={styles.textInput} onChangeText={(text) => setPassword(text)}
-        value={password} secureTextEntry={true}></TextInput>
-
-        {/* BOTONES */}
-        <View style={styles.buttonContainer}>
+        <ScrollView>
+          {/* BOTON BACK*/}
           <TouchableOpacity
-            onPress={LogInButton}
-            style={styles.button}>
-            <Text style={styles.textButton}>LOGIN</Text>
+            onPress={handlePressBack}
+            style={styles.backButton}>
+            <Image
+              source={require('./components/arrow_back.png')}
+              style={{ width: 50, height: 50 }}
+            />
           </TouchableOpacity>
-        </View>
+          <Text style={styles.paragraph}>Login</Text>
+          <Text style={styles.text}> USERNAME</Text>
+          <TextInput style={styles.textInput} onChangeText={(text) => setUsername(text)}
+          ></TextInput>
+          <Text style={styles.text}>PASSWORD</Text>
+          <TextInput style={styles.textInput} onChangeText={(text) => setPassword(text)}
+            value={password} secureTextEntry={true}></TextInput>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              onPress={LogInButton}
+              style={styles.button}>
+              <Text style={styles.textButton}>LOGIN</Text>
+            </TouchableOpacity>
+          </View>
         </ScrollView>
       </LinearGradient>
     </View>
@@ -119,7 +99,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     background: 'linear-gradient(to bottom, #1E5B53, #CCFFAA)',
-    // paddingTop: 44,
   },
   paragraph: {
     marginTop: '10%',

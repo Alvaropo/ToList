@@ -8,11 +8,6 @@ function Recipes({ navigation }) {
 
    const regex = /(tbsp|tsp|glass|can|ounces|cups|cup|tablespoons|spoon|spoons|tea|tablespoon|teaspoon|g|cann|and|can|grams|\d+\s*g)&&[\d.,\/#!$%\^&\*;:{}=\-_`~()]+\b|(?:\b(?:(?:\d+\s*g(?!\w))|(?:\d*\.\d+\s*g(?!\w))|(?:\d+\s*\/\s*2|\u00BD|\d+\s*\/\s*4|\d+\s*\/\s*8|\d+\s*\/\s*3)|(?:\d+\s*ounces(?!\w))|(?:\d+\s*cups?(?!\w))|(?:\d+\s*tbsp?(?!\w))|(?:\d+\s*cup?(?!\w))|(?:\d+\s*tablespoons?(?!\w))|(?:\d+\s*(?:table|tea)?spoons?(?!\w))||(?:tablespoons?|teaspoons?|tablespoon?|teaspoon?|ounces?|cup?|cups?|g?|tbsp?|tsp?)|(?:\d+\s*(?:table|tea)?spoon?(?!\w))|(?:g(?!\w))|(?:grams(?!\w)))\b)|[^\w\s]/gi;
 
-   //const regex = /(tbsp|tsp|glass|can|ounces|cups|cup|tablespoons|spoon|spoons|tea|tablespoon|teaspoon|g|cann|can|grams|\d+\s*g)/gi;
-   //const regex = texto.replace(regex_, "");
-   //esto es para recortar el string de ingredientes
-    // const result = ingredient.substring(0, 28).replace(regex, "");
-
     //PANTALLA DE CARGA
     const fadeAnim = useRef(new Animated.Value(1)).current;
 
@@ -25,6 +20,7 @@ function Recipes({ navigation }) {
     const [error, setError] = useState(null);
     const [recipes, setRecipes] = useState([]);
 
+    //MUESTRA LAS RECETAS DE LA API EDAMAM
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
@@ -43,13 +39,10 @@ function Recipes({ navigation }) {
             duration: 3000,
             useNativeDriver: true,
         }).start();
+
     }, []);
-    console.log('https://api.edamam.com/api/recipes/v2?type=public&q=' + recipeName + '&mealType=' + mealType + '&diet=' + dietType + '&calories=100-' + kcal + '&ingr=' + ingredients + '&app_id=98348007&app_key=77dff19f89b5d5a9347461da760c4e6c');
-    console.log('RECIPENAME ' + recipeName);
-    console.log('MEALTYPE ' + mealType);
-    console.log('DIETTYPE ' + dietType);
-    console.log('KCALO ' + kcal);
-    console.log('INGREDIENTS ' + ingredients);
+
+    //PANTALLA DE CARGA, SE MUESTRA ANTES DE OBTENER LOS DATOS DE LAS RECETAS
     if (isLoading) {
         return <Animated.View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', opacity: fadeAnim }}>
             <ActivityIndicator size="large" color="green" />
@@ -64,6 +57,7 @@ function Recipes({ navigation }) {
         navigation.navigate('Search');
     };
 
+    //AÑADE LA RECETA SELECCIONADA A LA BD
     const handlePressAddRecipes = (label) => {
         axios({
             method: 'post',
@@ -87,19 +81,6 @@ function Recipes({ navigation }) {
                 }
             }
         })
-            .then((response) => {
-                if (response.data.matchedCount > 0) {
-                    //  alert('Recetita añadidita.');
-                    console.log('DayofWeek ' + dayOfWeek);
-                    console.log('MealType ' + mealType);
-                    console.log('MealTypeFilter ' + mealTypeFilter);
-                    console.log('Label ' + label);
-                    console.log(JSON.stringify(response.data));
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
     };
     const handlePressAddList = (ingredientsString) => {
 
@@ -204,7 +185,6 @@ const styles = StyleSheet.create({
         background: 'linear-gradient(to bottom, #1E5B53, #CCFFAA)',
     },
     list: {
-
         flexDirection: 'column',
         backgroundColor: '#FFF',
         borderRadius: 65,

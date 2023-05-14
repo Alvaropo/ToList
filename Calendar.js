@@ -1,21 +1,17 @@
 import { useState, useContext, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableWithoutFeedback, ScrollView,Alert  } from 'react-native';
+import { StyleSheet, Text, View, TouchableWithoutFeedback, ScrollView, Alert } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import PantallasContext from './PantallasContext';
 import axios from 'axios';
 
-/**
- CAMBIAR LA LOGICA, YO IMPORTARIA EL JSON CON LOS DATOS Y A PARTIR DE AHI DIBUJARIA LOS ANILLOS O NO, AL IGUAL
- QUE EN LA PANTALLA DAY
- */
 const days = [
-  { name: 'monday'},
+  { name: 'monday' },
   { name: 'tuesday' },
-  { name: 'wednesday'},
+  { name: 'wednesday' },
   { name: 'thursday' },
   { name: 'friday' },
   { name: 'saturday' },
-  { name: 'sunday'},
+  { name: 'sunday' },
 ];
 
 function Calendar({ navigation }) {
@@ -28,69 +24,65 @@ function Calendar({ navigation }) {
     { day: "saturday", breakfast: "Add", lunch: "Add", dinner: "Add" },
     { day: "sunday", breakfast: "Add", lunch: "Add", dinner: "Add" },
   ]);
-  
-  
-
-
 
   //VARIABLES USE CONTEXT
   const { dayOfWeek, setDayOfWeek } = useContext(PantallasContext);
-  const { user, setUser} = useContext(PantallasContext);
+  const { user, setUser } = useContext(PantallasContext);
   const { mealType, setMealType } = useContext(PantallasContext);
 
-
+  //OBTIENE LAS RECETAS DE LA BD Y LAS ESTABLECE EN LOS COMPONENTES MONDAY,TUESDAY ETC
   useEffect(() => {
-    let obj = {}; 
+    let obj = {};
     const refresco = setInterval(() => {
-    axios({
-      method: 'post',
-      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/find',
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Request-Headers': '*',
-        'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw',
-      },
-      data: {
-        collection: 'recipes',
-        database: 'ToListDB',
-        dataSource: 'ToListCluster',
-        filter: { user: user },
-        limit: 1,
-      },
-    })
-      .then((response) => {
-        if (obj !== null && obj !== undefined) {
-          obj = response.data.documents[0];
-
-          console.log('DATA RESPONSE '+response.data.documents[0]);
-
-          Object.entries(obj.calendar).forEach(([day, meals]) => {
-            setDays_(prevDays => prevDays.map(item => {
-              if (item.day === day) {
-                return {
-                  ...item,
-                  breakfast: meals.breakfast || item.breakfast,
-                  lunch: meals.lunch || item.lunch,
-                  dinner: meals.dinner || item.dinner,
-                };
-              }
-              return item;
-            }));
-          });
-        }
+      axios({
+        method: 'post',
+        url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/find',
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Request-Headers': '*',
+          'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw',
+        },
+        data: {
+          collection: 'recipes',
+          database: 'ToListDB',
+          dataSource: 'ToListCluster',
+          filter: { user: user },
+          limit: 1,
+        },
       })
-      .catch((error) => {
-        console.log(error);
-      });
+        .then((response) => {
+          if (obj !== null && obj !== undefined) {
+            obj = response.data.documents[0];
+
+            //ESTABLECE EL NOMBRE DE LAS RECETAS OBTENIDAS PREVIAMENTE CON AXIOS
+            Object.entries(obj.calendar).forEach(([day, meals]) => {
+              setDays_(prevDays => prevDays.map(item => {
+                if (item.day === day) {
+                  return {
+                    ...item,
+                    breakfast: meals.breakfast || item.breakfast,
+                    lunch: meals.lunch || item.lunch,
+                    dinner: meals.dinner || item.dinner,
+                  };
+                }
+                return item;
+              }));
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }, 5000);//SE REFRESCAN LOS LA LISTA DE INGREDIENTES CADA 1 SEGUNDOS
-   console.log("ACTUALIZANDO DATOS CALENDAR");
+    console.log("Calendar content Updated");
   }, [user, dayOfWeek]);
-  
+
   const onSubmit = (index) => {
     setDayOfWeek(days[index].name);
     navigation.navigate('Day');
   };
 
+  //CUANDO SE REALIZA UNA PULSACION LARGA ELIMINA EL CONTENIDO
   const handleLongPress = () => {
     Alert.alert(
       'DELETE',
@@ -110,7 +102,7 @@ function Calendar({ navigation }) {
     );
   };
 
-
+  //ELIMINA EL CONTENIDO (RECETAS) DE LA PANTALLA
   const handleDelete = () => {
     console.log('Delete');
     axios({
@@ -130,9 +122,9 @@ function Calendar({ navigation }) {
         },
         update: {
           $set: {
-            ['calendar.'+dayOfWeek+'.breakfast']: 'Add',
-            ['calendar.'+dayOfWeek+'.lunch']: 'Add',
-            ['calendar.'+dayOfWeek+'.dinner']: 'Add'
+            ['calendar.' + dayOfWeek + '.breakfast']: 'Add',
+            ['calendar.' + dayOfWeek + '.lunch']: 'Add',
+            ['calendar.' + dayOfWeek + '.dinner']: 'Add'
           }
         }
       }
@@ -148,36 +140,32 @@ function Calendar({ navigation }) {
       .catch((error) => {
         console.log(error);
       });
-      //console.log('INGREDIENTES String '+ingredientsString);
-      //activar ring color naranja,rojo o azul
-     // navigation.navigate('Calendar')
   };
 
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#1E5B53', '#CCFFAA']} style={styles.container}>
         <ScrollView>
-          <Text style={styles.paragraph}>CALENDAR</Text>
-
-
+          <Text style={styles.paragraph}>Calendar</Text>
+          {/*RECORRE LA CONST DAYS PARA CREAR LOS DIFERENTES COMPONENTES DE CADA UNO DE LOS DIAS QUE HAY ESTABLECIDOS */}
           {days.map((item, index) => (
             <TouchableWithoutFeedback key={index} onPress={() => onSubmit(index)} onLongPress={handleLongPress}>
               <View style={styles.pill}>
+                {/*ESTABLECE LOS COLORES (RINGS) DEPENDIENDO SI HAY UNAN RECETA ESTABLECIDA O NO */}
                 <View
                   style={[
                     styles.orangeRing,
-                    { borderColor: days_[index].breakfast != "Add" ? 'orange' : 'white'  },
+                    { borderColor: days_[index].breakfast != "Add" ? 'orange' : 'white' },
                   ]}>
                   <View
                     style={[
                       styles.greenRing,
-                      { borderColor: days_[index].lunch != "Add" ? '#7BC640' : 'white'},  
+                      { borderColor: days_[index].lunch != "Add" ? '#7BC640' : 'white' },
                     ]}>
-                    {/*Si el color dentro del objeto day es true se activara el color del anillo, del contrario no */}
                     <View
                       style={[
                         styles.blueRing,
-                        { borderColor: days_[index].dinner != "Add" ? '#36ABDB' : 'white'},
+                        { borderColor: days_[index].dinner != "Add" ? '#36ABDB' : 'white' },
                       ]}>
                       <Text style={styles.text}>{item.name.toUpperCase()}</Text>
                     </View>
@@ -187,11 +175,9 @@ function Calendar({ navigation }) {
             </TouchableWithoutFeedback>
           )
           )}
-
-
         </ScrollView>
       </LinearGradient>
-    </View> 
+    </View>
   );
 }
 
@@ -203,7 +189,7 @@ const styles = StyleSheet.create({
   paragraph: {
     marginTop: '15%',
     marginBottom: '20%',
-    fontSize: 50,
+    fontSize: 60,
     fontWeight: 'bold',
     textAlign: 'center',
     backgroundClip: 'text',
@@ -214,7 +200,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: 'grey',
   },
-
   pill: {
     backgroundColor: '#FFF',
     borderRadius: 65,
@@ -222,9 +207,7 @@ const styles = StyleSheet.create({
     marginLeft: '8%',
     marginRight: '8%',
     marginBottom: '10%',
-
     paddingTop: '3%',
-
     paddingBottom: '3%',
     elevation: 5,
     shadowColor: '#000',

@@ -1,19 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
-import {
-  View, StyleSheet, Text, TouchableOpacity, Button, Image, TextInput, ScrollView,
-} from 'react-native';
+import { View, StyleSheet, Text, TouchableOpacity, TextInput, ScrollView } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import PantallasContext from './PantallasContext';
 import axios from 'axios';
 import md5 from "react-native-md5";
 
-
-
-
-
 function Profile({ navigation }) {
-
-
   //VARIABLES USE CONTEXT
   const { user, setUser } = useContext(PantallasContext);
   const { email_context, setEmail_context } = useContext(PantallasContext);
@@ -27,8 +19,7 @@ function Profile({ navigation }) {
   const [textPassword, setTextPassword] = useState('');
   const [textPassword2, setTextPassword2] = useState('');
 
-
-  //METODOS
+  //OBTIENE DATOS DEL USUARIO PARA MOSTRARLOS EN LA PANTALLA PROFILE
   useEffect(() => {
     axios({
       method: 'post',
@@ -48,20 +39,16 @@ function Profile({ navigation }) {
     })
       .then((response) => {
         const obj = response.data.documents[0];
-      //console.log(obj.email);
-      setEmail(obj.email);
-      setUsername(obj.username);
-      setPassword(obj.password);
+        setEmail(obj.email);
+        setUsername(obj.username);
+        setPassword(obj.password);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
 
-  
-
- 
-
+  //ESTABLECE LOS DATOS A LAS VARIABLES SI HAN SIDO MODIFICADOS
   const handlePressUpdate = () => {
     if (username.trim() === '' || email.trim() === '' || password.trim() === '' || password2.trim() === '') {//trim para eliminar los espacios en blanco
       alert('Complete all text fields.');
@@ -70,7 +57,7 @@ function Profile({ navigation }) {
         if (result) {
           if (password === password2) {
             console.log('Actualizar usuario y demas');
-            setUser(username);//establezco el usuario para despues poder usarlo en toda la aplicacion para identificar y importar sus datos y recetas
+            setUser(username);//establezco el usuario para despues poder usarlo en toda la aplicacion para identificar y importar sus datos y recetas como identificador
             setEmail_context(email);
             setPassword_context(password);
             handleUpdateUser();
@@ -78,13 +65,12 @@ function Profile({ navigation }) {
           } else {
             alert('Passwords not match.');
           }
-
         }
       });
     } else {
       if (password === password2) {
         console.log('Actualizar usuario y demas');
-        setUser(username);//establezco el usuario para despues poder usarlo en toda la aplicacion para identificar y importar sus datos y recetas
+        setUser(username);//establezco el usuario para despues poder usarlo en toda la aplicacion para identificar y importar sus datos y recetas como identificador
         setEmail_context(email);
         setPassword_context(password);
         handleUpdateUser();
@@ -92,10 +78,10 @@ function Profile({ navigation }) {
       } else {
         alert('Passwords not match.');
       }
-
     }
   };
 
+  //ACTUALIZA LOS DATOS ESTABLECIDOS
   const handleUpdateUser = () => {
     axios({
       method: 'post',
@@ -109,24 +95,22 @@ function Profile({ navigation }) {
         database: 'ToListDB',
         dataSource: 'ToListCluster',
         filter: {
-          username: user // el valor de la variable de estado `username`
+          username: user
         },
         update: {
           $set: {
-            username: username, // el valor de la variable de estado `username`
-            email: email, // el valor de la variable de estado `email`
-            password: password // el valor de la variable de estado `password`
+            username: username,
+            email: email,
+            password: password
           }
         }
       }
     }).then((response) => {
-      console.log(response.data); // loguea la respuesta en la consola
+      console.log(response.data);
     }).catch((error) => {
-      console.log(error); // loguea el error en la consola
+      console.log(error);
     });
-
-
-
+    //AL MODIFICAR EL NOMBRE DE USUARIO TENGO QUE MODIFICARLO TAMBIEN EN LAS TABLAS CORRESPONDIENTES AL MISMO
     axios({
       method: 'post',
       url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/updateOne',
@@ -139,21 +123,19 @@ function Profile({ navigation }) {
         database: 'ToListDB',
         dataSource: 'ToListCluster',
         filter: {
-          user: user // el valor de la variable de estado `username`
+          user: user
         },
         update: {
           $set: {
-            user: username, // el valor de la variable de estado `username`
+            user: username,
           }
         }
       }
     }).then((response) => {
-      console.log(response.data); // loguea la respuesta en la consola
+      console.log(response.data);
     }).catch((error) => {
-      console.log(error); // loguea el error en la consola
+      console.log(error);
     });
-
-
 
     axios({
       method: 'post',
@@ -167,24 +149,22 @@ function Profile({ navigation }) {
         database: 'ToListDB',
         dataSource: 'ToListCluster',
         filter: {
-          user: user // el valor de la variable de estado `username`
+          user: user
         },
         update: {
           $set: {
-            user: username, // el valor de la variable de estado `username`
+            user: username
           }
         }
       }
     }).then((response) => {
-      console.log(response.data); // loguea la respuesta en la consola
+      console.log(response.data);
     }).catch((error) => {
-      console.log(error); // loguea el error en la consola
+      console.log(error);
     });
-
-    
-    
   }
 
+  //COMPRUEBA SI EL USUARO O EMAIL SON EXISTENTES CON EL INTRODUCIDO
   const handleCheckUsername = () => {
     return axios({
       method: 'post',
@@ -199,7 +179,7 @@ function Profile({ navigation }) {
         database: 'ToListDB',
         dataSource: 'ToListCluster',
         filter: {
-          $or: [ //COMPRUEBA SI EXISTE UN USUARO O EMAIL CON EL INTRODUCIDO
+          $or: [
             { email: email },
             { username: username }
           ]
@@ -210,11 +190,8 @@ function Profile({ navigation }) {
       .then((response) => {
         if (response.data.documents.length === 1) {
           alert('Username / Email exist.');
-          //console.log(response.data.documents);
-          //console.log('Si existen usuarios');
           return false;
         } else {
-          // console.log('No existen usuarios.');
           return true;
         }
       })
@@ -228,8 +205,6 @@ function Profile({ navigation }) {
     console.log('logout');
   };
 
-  //
-
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#1E5B53', '#CCFFAA']} style={styles.container}>
@@ -240,10 +215,11 @@ function Profile({ navigation }) {
           <Text style={styles.text}>EMAIL</Text>
           <TextInput style={styles.textInput} onChangeText={(text) => setEmail(text)} defaultValue={email}></TextInput>
           <Text style={styles.text}>PASSWORD</Text>
-          <TextInput style={styles.textInput} secureTextEntry={true} onChangeText={(text) => {setTextPassword(text); setPassword(md5.hex_md5(text))}}/* defaultValue={password_context}*/ ></TextInput>
+          <TextInput style={styles.textInput} secureTextEntry={true}
+            onChangeText={(text) => { setTextPassword(text); setPassword(md5.hex_md5(text)) }}></TextInput>
           <Text style={styles.text}>REPEAT PASSWORD</Text>
-          <TextInput style={styles.textInput} secureTextEntry={true} onChangeText={(text) => {setTextPassword2(text);setPassword2(md5.hex_md5(text))}} ></TextInput>
-
+          <TextInput style={styles.textInput} secureTextEntry={true}
+            onChangeText={(text) => { setTextPassword2(text); setPassword2(md5.hex_md5(text)) }} ></TextInput>
           {/* BOTONES */}
           <View style={styles.buttonContainer}>
             <TouchableOpacity
@@ -269,8 +245,8 @@ const styles = StyleSheet.create({
     background: 'linear-gradient(to bottom, #1E5B53, #CCFFAA)',
   },
   paragraph: {
-    marginTop: '10%',
-    marginBottom: '10%',
+    marginTop: '15%',
+    marginBottom: '14%',
     fontSize: 60,
     fontWeight: 'bold',
     textAlign: 'center',
@@ -278,7 +254,6 @@ const styles = StyleSheet.create({
     WebkitBackgroundClip: 'text',
     color: 'white',
   },
-
   buttonContainer: {
     flex: 1,
     justifyContent: 'center',

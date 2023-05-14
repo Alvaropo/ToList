@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, ScrollView, Image, } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import PantallasContext from './PantallasContext';
@@ -16,56 +16,59 @@ function List({ navigation }) {
   const handleCheck = (index) => {
     const newList = [...shoppingList];
     newList[index].checked = !newList[index].checked;
-    //console.log('BOOL '+newList[index].checked);
     setShoppingList(newList);
     handleUpdateList(index, newList[index].checked);
   };
 
+  //ELIMINA LOS ELEMENTOS MARCADOS EN CHECK DE LA LISTA
   const handleDeleteCheck = () => {
     console.log('delete');
     axios({
-        method: 'post',
-        url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/updateMany',
-        headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Request-Headers': '*',
-            'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw',
-        },
-        data: {
-            collection: 'list',
-            database: 'ToListDB',
-            dataSource: 'ToListCluster',
-            filter: { user: user },
-            update: {
-                $pull: {
-                    items: { checked: true }
-                }
-            }
-        },
+      method: 'post',
+      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/updateMany',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Request-Headers': '*',
+        'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw',
+      },
+      data: {
+        collection: 'list',
+        database: 'ToListDB',
+        dataSource: 'ToListCluster',
+        filter: { user: user },
+        update: {
+          $pull: {
+            items: { checked: true }
+          }
+        }
+      },
     })
-    .then((response) => {
+      .then((response) => {
         if (response.data.modified > 0) {
-            alert('Checked items deleted.');
+          alert('Checked items deleted.');
         } else {
           alert('Checked items deleted.');
         }
-    })
-    .catch((error) => {
+      })
+      .catch((error) => {
         console.log(error);
-    });
-}
+      });
+  }
 
-  const handleResponse = (response) => {//ESTA FUNCION SIRVE PARA ESPERAR LA RESPUESTA DE LA API Y DESPUES ASIGNARLAS
+  //ESTA FUNCION SIRVE PARA ESPERAR LA RESPUESTA DE LA API Y DESPUES ASIGNARLAS
+  const handleResponse = (response) => {
     if (response.data.documents.length === 1) {
       const obj = response.data.documents[0].items;
-      setShoppingList(obj);//AÑADO LOS INGREDIENTES A shoppinglist en un objeto json
+      setShoppingList(obj);//AÑADO LOS INGREDIENTES A shoppinglist EN UN OBJETO JSON
     }
 
   };
-  const handleUpdateList = (index, bool) => {//PASO EL INDEX Y EL VALOR BOOL QUE INDICARA SI EL CHECK ES TRUE O FALSE y hace el update en la bd
+
+  //PASO EL INDEX Y EL VALOR BOOL QUE INDICARA SI EL CHECK ES TRUE O FALSE Y HACE EL UPDATE A LA BD
+  const handleUpdateList = (index, bool) => {
     axios({
       method: 'post',
-      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/updateOne',//many
+      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/updateOne',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Request-Headers': '*',
@@ -97,8 +100,8 @@ function List({ navigation }) {
       });
   };
 
+  //OBTIENE LA LISTA DE INGREDIENTES CORRESPONDIENTE AL USUARIO
   useEffect(() => {
-
     const refresco = setInterval(() => {
       axios({
         method: 'post',
@@ -122,7 +125,7 @@ function List({ navigation }) {
         .catch((error) => {
           console.log(error);
         });
-        console.log('REFRESCO LISTA');
+      console.log('REFRESCO LISTA');
     }, 3000);//SE REFRESCAN LOS LA LISTA DE INGREDIENTES CADA 1 SEGUNDOS
   }, []);
 
@@ -131,7 +134,13 @@ function List({ navigation }) {
       <LinearGradient colors={['#1E5B53', '#CCFFAA']} style={styles.container}>
         <ScrollView>
           <Text style={styles.paragraph}>List</Text>
-          <Text style={{marginTop: 60,fontSize: 20,textAlign: 'center',color: 'white',fontWeight: 'bold',}}>Total - {shoppingList.length}</Text>
+          <Text style={{
+            marginTop: 60,
+            fontSize: 20,
+            textAlign: 'center',
+            color: 'white',
+            fontWeight: 'bold',
+          }}>Total - {shoppingList.length}</Text>
           <View style={styles.list}>
             {shoppingList.map((item, index) => (
               <TouchableOpacity key={index} onPress={() => handleCheck(index)}>
@@ -149,7 +158,12 @@ function List({ navigation }) {
           </View>
           <TouchableOpacity>
             <View style={styles.delete}>
-              <Text style={{ textAlign: 'center', color: '#F24E29', fontWeight: 'bold', }} onPress={() => handleDeleteCheck()}>DELETE CHECKED</Text>
+              <Text style={{
+                textAlign: 'center',
+                color: '#F24E29',
+                fontWeight: 'bold',
+              }}
+                onPress={() => handleDeleteCheck()}>DELETE CHECKED</Text>
             </View>
           </TouchableOpacity>
         </ScrollView>
@@ -166,9 +180,6 @@ const styles = StyleSheet.create({
   list: {
     backgroundColor: '#FFF',
     borderRadius: 55,
-    //alignItems: 'center',
-    // justifyContent: 'center',
-    // paddingVertical: 0,
     paddingHorizontal: 20,
     marginLeft: 15,
     marginRight: 15,
@@ -200,7 +211,6 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     paddingTop: 20,
     paddingBottom: 20,
-
     //AÑADIR SOMBRA Y BORDE AL BOTON
     elevation: 5,
     shadowColor: '#000',
@@ -221,7 +231,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   paragraph: {
-    marginTop: 60,
+    marginTop: '15%',
+    marginBottom: '-6%',
     fontSize: 60,
     fontWeight: 'bold',
     textAlign: 'center',

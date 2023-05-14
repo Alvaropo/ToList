@@ -1,41 +1,61 @@
-import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View, Image, ImageBackground } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Font from 'expo-font';
 
 function FrontPage({ navigation }) {
-  //CONTROLAR ANIMACIONES BOTONES
+  //FUENTE LOBSTER REGULAR
+  const [fontsLoaded, setFontsLoaded] = useState(false);
 
+  useEffect(() => {
+    async function loadFonts() {
+      await Font.loadAsync({
+        'Lobster-Regular': require('./assets/Lobster-Regular.ttf'),
+      });
+      setFontsLoaded(true);
+    }
+    loadFonts();
+  }, []);
 
-  //JUNTAR ANIMACIONES Y REDIRECCIONAMIENTO DE PANTALLAS
-
+  //REDIRECCIONAMIENTO DE PANTALLAS
   const LogInButton = () => {
-    navigation.navigate('LogIn'); //navega a pantalla LogIn
+    navigation.navigate('LogIn');
   };
 
   const SignUpButton = () => {
-    navigation.navigate('SignUp'); //navega a pantalla SignUp
+    navigation.navigate('SignUp');
   };
+
+  //EVITAR ERROR DE RENDERIZAR LA PANTALLA ANTES DE CARGAR LA FUNETE DE TEXTO
+  if (!fontsLoaded) {
+    return <View />;
+  }
 
   return (
     <View style={styles.container}>
       <LinearGradient colors={['#1E5B53', '#CCFFAA']} style={styles.container}>
-      <View style={{backgroundColor:"transparent", alignItems:'center',paddingTop:'40%'}}>
-        <Image source={require('./components/Untitled.png')} style={{ width: 200, height: 170 }}/>
-        </View>
-        <Text style={styles.paragraph}>ToList</Text>
-        {/* BOTONES */}
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            onPress={LogInButton} /*AQUI SE PONE SIN Parentesis()*/
-            style={styles.button}>
-            <Text style={styles.textButton}>LOGIN</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={SignUpButton} /*AQUI SE PONE SIN Parentesis()*/
-            style={styles.button}>
-            <Text style={styles.textButton}>SIGN UP</Text>
-          </TouchableOpacity>
-        </View>
+        <ImageBackground
+          source={require('./components/Verduras.png')}
+          resizeMode="cover"
+          style={styles.container}
+        >
+          <View style={{ backgroundColor: "transparent", alignItems: 'center', paddingTop: '40%' }}>
+          </View>
+          <Text style={styles.paragraph}>ToList</Text>
+          {/* BOTONES */}
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              onPress={LogInButton}
+              style={styles.button}>
+              <Text style={styles.textButton}>LOGIN</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={SignUpButton}
+              style={styles.button}>
+              <Text style={styles.textButton}>SIGN UP</Text>
+            </TouchableOpacity>
+          </View>
+        </ImageBackground>
       </LinearGradient>
     </View>
   );
@@ -47,13 +67,16 @@ const styles = StyleSheet.create({
     background: 'linear-gradient(to bottom, #1E5B53, #CCFFAA)',
   },
   paragraph: {
+    fontFamily: 'Lobster-Regular',
     marginTop: 10,
-    fontSize: 60,
-    fontWeight: 'bold',
+    fontSize: 120,
     textAlign: 'center',
     backgroundClip: 'text',
     WebkitBackgroundClip: 'text',
     color: 'white',
+    textShadowColor: '#5B4D4D',
+    textShadowOffset: { width: 3, height: 3 },
+    textShadowRadius: 1,
   },
   buttonContainer: {
     flex: 1,
