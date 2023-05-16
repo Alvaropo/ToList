@@ -13,6 +13,7 @@ function Recipes({ navigation }) {
 
     //VARIABLES USECONTEXT
     const { recipeName, setRecipeName } = useContext(PantallasContext);
+    const { contador, setContador } = useContext(PantallasContext);
     const { dayOfWeek, mealType, user, dietType, kcal, ingredients, mealTypeFilter } = useContext(PantallasContext);
 
     //VARIABLES LOCALES
@@ -116,7 +117,8 @@ function Recipes({ navigation }) {
             .then((response) => {
                 if (response.data.matchedCount > 0) {
                     alert('Receta añadida.');
-                    console.log(response.data);
+                    setContador(contador+1);
+                    //console.log(response.data);
                 } else {
                     alert('No se ha podido añadir.');
                 }
@@ -124,7 +126,7 @@ function Recipes({ navigation }) {
             .catch((error) => {
                 console.log(error);
             });
-        console.log('INGREDIENTES String ' + ingredientsString);
+        //console.log('INGREDIENTES String ' + ingredientsString);
         navigation.navigate('Calendar')
     };
 

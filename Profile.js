@@ -56,7 +56,6 @@ function Profile({ navigation }) {
       handleCheckUsername().then((result) => {
         if (result) {
           if (password === password2) {
-            console.log('Actualizar usuario y demas');
             setUser(username);//establezco el usuario para despues poder usarlo en toda la aplicacion para identificar y importar sus datos y recetas como identificador
             setEmail_context(email);
             setPassword_context(password);
@@ -69,7 +68,6 @@ function Profile({ navigation }) {
       });
     } else {
       if (password === password2) {
-        console.log('Actualizar usuario y demas');
         setUser(username);//establezco el usuario para despues poder usarlo en toda la aplicacion para identificar y importar sus datos y recetas como identificador
         setEmail_context(email);
         setPassword_context(password);
@@ -106,7 +104,7 @@ function Profile({ navigation }) {
         }
       }
     }).then((response) => {
-      console.log(response.data);
+      //console.log(response.data);
     }).catch((error) => {
       console.log(error);
     });
@@ -132,7 +130,7 @@ function Profile({ navigation }) {
         }
       }
     }).then((response) => {
-      console.log(response.data);
+     // console.log(response.data);
     }).catch((error) => {
       console.log(error);
     });
@@ -158,7 +156,7 @@ function Profile({ navigation }) {
         }
       }
     }).then((response) => {
-      console.log(response.data);
+      //console.log(response.data);
     }).catch((error) => {
       console.log(error);
     });
@@ -202,7 +200,7 @@ function Profile({ navigation }) {
 
   const handlePressLogout = () => {
     navigation.navigate('FrontPage');
-    console.log('logout');
+    console.log('Logout');
   };
 
   return (

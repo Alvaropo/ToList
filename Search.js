@@ -62,12 +62,10 @@ function Search({ navigation }) {
   //CONTROL DE BOTONES
   const handleButtonPressMeal = (button) => {
     setSelectedButtonMealType(button);
-    console.log(button);
   };
 
   const handleButtonPressDiet = (button) => {
     setSelectedButtonDietType(button);
-    console.log(button);
   };
 
   //PULSAR PARA INCREMENTAR AUTOMATICAMENTE AL DEJAR PRESIONADO UN BOTON +,-

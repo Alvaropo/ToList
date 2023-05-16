@@ -15,6 +15,7 @@ export const PantallasProvider = ({ children }) => {
     const [dietType, setDietType] = useState("");
     const [kcal, setKcal] = useState("");
     const [ingredients, setIngredients] = useState("");
+    const [contador, setContador] = useState(0);
 
     return (
         <PantallasContext.Provider 
@@ -29,7 +30,8 @@ export const PantallasProvider = ({ children }) => {
             mealTypeFilter, setMealTypeFilter,
             dietType, setDietType,
             kcal, setKcal,
-            ingredients, setIngredients
+            ingredients, setIngredients,
+            contador, setContador
             }}>
             {children}
         </PantallasContext.Provider>

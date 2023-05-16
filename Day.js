@@ -13,6 +13,7 @@ function Day({ navigation }) {
 
   //VARIABLES USECONTEXT
   const { dayOfWeek, mealType, setMealType, user } = useContext(PantallasContext);
+  const { contador, setContador } = useContext(PantallasContext);
 
   const handleResponse = (response) => {//ESTA FUNCION SIRVE PARA ESPERAR LA RESPUESTA DE LA API Y DESPUES ASIGNAR VALORES
     if (response.data.documents.length === 1) {
@@ -116,7 +117,7 @@ function Day({ navigation }) {
       .then((response) => {
         if (response.data.matchedCount > 0) {
           alert('Recipe deleted.');
-          console.log(response.data);
+          //console.log(response.data);
           // Actualiza el estado correspondiente a null antes de tener que volver a acceder a la bd
           if (type === 'breakfast') {
             setBreakfast('Add');
@@ -126,12 +127,13 @@ function Day({ navigation }) {
             setDinner('Add');
           }
         } else {
-          alert('Error on delete.');
+          alert('Delete Error.');
         }
       })
       .catch((error) => {
         console.log(error);
       });
+      setContador(contador+1);
   };
 
   const addrecipe = (

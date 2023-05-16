@@ -9,6 +9,7 @@ function List({ navigation }) {
 
   //VARIABLES USE CONTEXT
   const { user, setUser } = useContext(PantallasContext);
+  const { contador, setContador } = useContext(PantallasContext);
 
   //VARIABLES LOCALES
   const [shoppingList, setShoppingList] = useState([]);
@@ -22,7 +23,7 @@ function List({ navigation }) {
 
   //ELIMINA LOS ELEMENTOS MARCADOS EN CHECK DE LA LISTA
   const handleDeleteCheck = () => {
-    console.log('delete');
+    console.log('Delete Checked');
     axios({
       method: 'post',
       url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/updateMany',
@@ -53,6 +54,7 @@ function List({ navigation }) {
       .catch((error) => {
         console.log(error);
       });
+      setContador(contador+1);
   }
 
   //ESTA FUNCION SIRVE PARA ESPERAR LA RESPUESTA DE LA API Y DESPUES ASIGNARLAS
@@ -102,7 +104,6 @@ function List({ navigation }) {
 
   //OBTIENE LA LISTA DE INGREDIENTES CORRESPONDIENTE AL USUARIO
   useEffect(() => {
-    const refresco = setInterval(() => {
       axios({
         method: 'post',
         url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/find',
@@ -125,9 +126,8 @@ function List({ navigation }) {
         .catch((error) => {
           console.log(error);
         });
-      console.log('REFRESCO LISTA');
-    }, 3000);//SE REFRESCAN LOS LA LISTA DE INGREDIENTES CADA 1 SEGUNDOS
-  }, []);
+      console.log('List content Updated');
+  }, [contador]);
 
   return (
     <View style={styles.container}>

@@ -29,53 +29,52 @@ function Calendar({ navigation }) {
   const { dayOfWeek, setDayOfWeek } = useContext(PantallasContext);
   const { user, setUser } = useContext(PantallasContext);
   const { mealType, setMealType } = useContext(PantallasContext);
+  const { contador, setContador } = useContext(PantallasContext);
 
   //OBTIENE LAS RECETAS DE LA BD Y LAS ESTABLECE EN LOS COMPONENTES MONDAY,TUESDAY ETC
   useEffect(() => {
-    let obj = {};
-    const refresco = setInterval(() => {
-      axios({
-        method: 'post',
-        url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/find',
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Request-Headers': '*',
-          'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw',
-        },
-        data: {
-          collection: 'recipes',
-          database: 'ToListDB',
-          dataSource: 'ToListCluster',
-          filter: { user: user },
-          limit: 1,
-        },
-      })
-        .then((response) => {
-          if (obj !== null && obj !== undefined) {
-            obj = response.data.documents[0];
+      let obj = {};
+    axios({
+      method: 'post',
+      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/find',
+      headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Request-Headers': '*',
+        'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw',
+      },
+      data: {
+        collection: 'recipes',
+        database: 'ToListDB',
+        dataSource: 'ToListCluster',
+        filter: { user: user },
+        limit: 1,
+      },
+    })
+      .then((response) => {
+        if (obj !== null && obj !== undefined) {
+          obj = response.data.documents[0];
 
-            //ESTABLECE EL NOMBRE DE LAS RECETAS OBTENIDAS PREVIAMENTE CON AXIOS
-            Object.entries(obj.calendar).forEach(([day, meals]) => {
-              setDays_(prevDays => prevDays.map(item => {
-                if (item.day === day) {
-                  return {
-                    ...item,
-                    breakfast: meals.breakfast || item.breakfast,
-                    lunch: meals.lunch || item.lunch,
-                    dinner: meals.dinner || item.dinner,
-                  };
-                }
-                return item;
-              }));
-            });
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }, 5000);//SE REFRESCAN LOS LA LISTA DE INGREDIENTES CADA 1 SEGUNDOS
+          //ESTABLECE EL NOMBRE DE LAS RECETAS OBTENIDAS PREVIAMENTE CON AXIOS
+          Object.entries(obj.calendar).forEach(([day, meals]) => {
+            setDays_(prevDays => prevDays.map(item => {
+              if (item.day === day) {
+                return {
+                  ...item,
+                  breakfast: meals.breakfast || item.breakfast,
+                  lunch: meals.lunch || item.lunch,
+                  dinner: meals.dinner || item.dinner,
+                };
+              }
+              return item;
+            }));
+          });
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
     console.log("Calendar content Updated");
-  }, [user, dayOfWeek]);
+  }, [contador]);
 
   const onSubmit = (index) => {
     setDayOfWeek(days[index].name);
@@ -132,7 +131,8 @@ function Calendar({ navigation }) {
       .then((response) => {
         if (response.data.matchedCount > 0) {
           alert('Recipes deleted.');
-          console.log(response.data);
+          setContador(contador+1);
+          //console.log(response.data);
         } else {
           alert('Error on delete.');
         }
