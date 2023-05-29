@@ -52,11 +52,11 @@ function SignUp({ navigation }) {
   const handleCheckUsername = () => {
     return axios({
       method: 'post',
-      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/find',
+      url: '',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Request-Headers': '*',
-        'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw',
+        'api-key': '',
       },
       data: {
         collection: 'users',
@@ -88,11 +88,11 @@ function SignUp({ navigation }) {
   const handleInsert = () => {
     axios({
       method: 'post',
-      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/insertOne',
+      url: '',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Request-Headers': '*',
-        'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw',
+        'api-key': '',
       },
       data: {
         collection: 'users',
@@ -118,11 +118,11 @@ function SignUp({ navigation }) {
   const handleCreateDataRecipes = () => {
     axios({
       method: 'post',
-      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/insertOne',
+      url: '',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Request-Headers': '*',
-        'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw',
+        'api-key': '',
       },
       data: {
         collection: 'recipes',
@@ -182,11 +182,11 @@ function SignUp({ navigation }) {
   const handleCreateDataList = () => {
     axios({
       method: 'post',
-      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/insertOne',
+      url: '',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Request-Headers': '*',
-        'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw',
+        'api-key': '',
       },
       data: {
         collection: 'list',
