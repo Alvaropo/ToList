@@ -28,11 +28,11 @@ function Day({ navigation }) {
   useEffect(() => {
     axios({
       method: 'post',
-      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/find',
+      url: '',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Request-Headers': '*',
-        'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw',
+        'api-key': '',
       },
       data: {
         collection: 'recipes',
@@ -94,11 +94,11 @@ function Day({ navigation }) {
     console.log('Delete');
     axios({
       method: 'post',
-      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/updateOne',
+      url: '',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Request-Headers': '*',
-        'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw',
+        'api-key': '',
       },
       data: {
         collection: 'recipes',
