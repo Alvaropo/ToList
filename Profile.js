@@ -23,11 +23,11 @@ function Profile({ navigation }) {
   useEffect(() => {
     axios({
       method: 'post',
-      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/find',
+      url: '',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Request-Headers': '*',
-        'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw',
+        'api-key': '',
       },
       data: {
         collection: 'users',
@@ -83,10 +83,10 @@ function Profile({ navigation }) {
   const handleUpdateUser = () => {
     axios({
       method: 'post',
-      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/updateOne',
+      url: '',
       headers: {
         'Content-Type': 'application/json',
-        'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw'
+        'api-key': ''
       },
       data: {
         collection: 'users',
@@ -111,10 +111,10 @@ function Profile({ navigation }) {
     //AL MODIFICAR EL NOMBRE DE USUARIO TENGO QUE MODIFICARLO TAMBIEN EN LAS TABLAS CORRESPONDIENTES AL MISMO
     axios({
       method: 'post',
-      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/updateOne',
+      url: '',
       headers: {
         'Content-Type': 'application/json',
-        'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw'
+        'api-key': ''
       },
       data: {
         collection: 'recipes',
@@ -137,10 +137,10 @@ function Profile({ navigation }) {
 
     axios({
       method: 'post',
-      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/updateOne',
+      url: '',
       headers: {
         'Content-Type': 'application/json',
-        'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw'
+        'api-key': ''
       },
       data: {
         collection: 'list',
@@ -166,11 +166,11 @@ function Profile({ navigation }) {
   const handleCheckUsername = () => {
     return axios({
       method: 'post',
-      url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/find',
+      url: '',
       headers: {
         'Content-Type': 'application/json',
         'Access-Control-Request-Headers': '*',
-        'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw',
+        'api-key': '',
       },
       data: {
         collection: 'users',
