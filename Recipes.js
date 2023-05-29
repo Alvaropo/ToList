@@ -26,7 +26,7 @@ function Recipes({ navigation }) {
         const fetchData = async () => {
             setIsLoading(true);
             try {
-                const response = await axios.get('https://api.edamam.com/api/recipes/v2?type=public&q=' + recipeName + '&mealType=' + mealType + '&diet=' + dietType + '&calories=100-' + kcal + '&ingr=' + ingredients + '&app_id=98348007&app_key=77dff19f89b5d5a9347461da760c4e6c');
+                const response = await axios.get('https://api.edamam.com/api/recipes/v2?type=public&q=' + recipeName + '&mealType=' + mealType + '&diet=' + dietType + '&calories=100-' + kcal + '&ingr=' + ingredients + '&app_id=98348007&app_key=');
                 setRecipes(response.data.hits.slice(0, 20)); // Se limita a un máximo de 20 recetas
             } catch (error) {
                 setError(error);
@@ -62,11 +62,11 @@ function Recipes({ navigation }) {
     const handlePressAddRecipes = (label) => {
         axios({
             method: 'post',
-            url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/updateOne',
+            url: '',
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Request-Headers': '*',
-                'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw',
+                'api-key': '',
             },
             data: {
                 collection: 'recipes',
@@ -92,11 +92,11 @@ function Recipes({ navigation }) {
         const items = filteredIngredientsList.map((ingredient) => ({ name: ingredient, checked: false }));
         axios({
             method: 'post',
-            url: 'https://eu-west-2.aws.data.mongodb-api.com/app/data-enpqw/endpoint/data/v1/action/updateOne',
+            url: '',
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Request-Headers': '*',
-                'api-key': 'JYIVV7JXuoEuQfgVaHsVkpLx7Lc5moChIBoldhTVuFZjK5nSZiD6ahlyuS1411Lw',
+                'api-key': '',
             },
             data: {
                 collection: 'list',
